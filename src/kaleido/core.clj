@@ -8,7 +8,6 @@
             [compojure.core :refer :all]
             [compojure.route :as route]
             [kaleido.componse.project :as route-project]
-            [kaleido.componse.model :as route-model]
             [kaleido.componse.auth :as route-auth]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer [wrap-session]]
@@ -61,10 +60,8 @@
            ;         (app-root-routes))
            (context "/project" []
              (route-project/app-inner-project-routes))
-           (context "/model" []
-             (route-model/app-inner-model-routes))
            (context "/auth" []
-             (route-auth/app-inner-auth-routes))
+             (route-auth/app-inner-auth-routes "__root__"))
            ;(context "/char" []
            ;  (route-char/websocket-routes))
            (route/not-found "Not Found"))

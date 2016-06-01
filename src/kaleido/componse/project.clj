@@ -1,11 +1,13 @@
 (ns kaleido.componse.project
   (:require [kaleido.tools :refer :all]
-            ;[monger.core :as mg]
+    ;[monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
             [kaleido.source.mongodb :as db-source]
     ;[compojure.route :as route]
+            [kaleido.componse.model :as route-model]
+            [kaleido.componse.auth :as route-auth]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [header response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
@@ -34,4 +36,8 @@
     (GET "/show/:_id" [_id] (show _id))
     (POST "/:_id/search" [] (str "project + "))
     (DELETE "/:_id/destory" [_id] (str "project destory by " _id))
-    (POST "/:_id/update" [_id] (str "project update + " _id))))
+    (POST "/:_id/update" [_id] (str "project update + " _id))
+    (context "/:_id/model" [_id]
+      (route-model/app-inner-model-routes _id))
+    (context "/:_id/auth" [_id]
+      (route-auth/app-inner-auth-routes _id))))

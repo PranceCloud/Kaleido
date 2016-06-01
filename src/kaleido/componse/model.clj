@@ -1,6 +1,6 @@
 (ns kaleido.componse.model
   (:require [kaleido.tools :refer :all]
-            ;[monger.core :as mg]
+    ;[monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
@@ -12,11 +12,11 @@
 
 (declare app-inner-model-routes show-id create)
 
-(defn show-id [name]
-  ;(log/info request)
-  (response-json {:message "show model!" :name name}))
+(defn show-id [_id request]
+  (log/info (:params request))
+  (response-json {:message "show model!" :name (get-in request [:params :name]) :project _id}))
 
-(defn create [request]
+(defn create [_id request]
   (log/info request)
   (let [db (db-source/db "test")
         coll "documents"
@@ -29,9 +29,9 @@
     ; :body    (str "project Create!")}
     ))
 
-(defn app-inner-model-routes []
+(defn app-inner-model-routes [_id]
   (routes
-    (GET "/show/:name" [name] (show-id name))
-    (POST "/create" request (create request))
-    (POST "/destory/:model" [model] (str "model destory + " model))
-    (POST "/update/:model" [model] (str "model update + " model))))
+    (GET "/show/:name" request (show-id _id request))
+    (POST "/create" request (create _id request))
+    (POST "/destory/:model" [_id model] (str "project " _id " model destory + " model))
+    (POST "/update/:model" [_id model] (str "project " _id "model update + " model))))

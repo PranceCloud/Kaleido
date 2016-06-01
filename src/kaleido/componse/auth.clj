@@ -1,11 +1,11 @@
 (ns kaleido.componse.auth
   (:require [kaleido.tools :refer :all]
             [kaleido.suppose.account :as account]
-            ;[monger.core :as mg]
-            ;[monger.collection :as mc]
+    ;[monger.core :as mg]
+    ;[monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
-            ;[kaleido.source.mongodb :as db-source]
+    ;[kaleido.source.mongodb :as db-source]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
@@ -13,7 +13,7 @@
 
 (declare login logout)
 
-(defn login [require]
+(defn login [require project-id]
   (log/info (:login_name (:params require)))
   (let [params (:params require)
         login_name (:login_name params)
@@ -31,11 +31,11 @@
     (response-json {:status auth_status :message (:message auth_login) :value auth_account}))
   )
 
-(defn logout [require]
+(defn logout [require project-id]
   (-> (response-json {:status true})
       (assoc :session nil)))
 
-(defn change [require]
+(defn change [require project-id]
   (let [params (:params require)
         login_name (:login_name params)
         login_password (:login_password params)
@@ -43,7 +43,7 @@
     (log/info change-account)
     (response-json change-account)))
 
-(defn create [require]
+(defn create [require project-id]
   (let [params (:params require)
         login_name (:login_name params)
         login_password (:login_password params)
@@ -52,16 +52,17 @@
     (log/info params)
     (response-json create-account)))
 
-(defn destory [require]
+(defn destory [require project-id]
   (let [params (:params require)
         login_name (:login_name params)
         req (account/destory {:login_name login_name})]
     (response-json req)))
 
-(defn app-inner-auth-routes []
+(defn app-inner-auth-routes [project-id]
   (routes
-    (POST "/login" request (login request))
-    (DELETE "/destory" request (destory request))
-    (POST "/create" request (create request))
-    (POST "/update" request (change request))
-    (POST "/logout" request (logout request))))
+    (GET "/api" [] (str "API " project-id))
+    (POST "/login" request (login request project-id))
+    (DELETE "/destory" request (destory request project-id))
+    (POST "/create" request (create request project-id))
+    (POST "/update" request (change request project-id))
+    (POST "/logout" request (logout request project-id))))
