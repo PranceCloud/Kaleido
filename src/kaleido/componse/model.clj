@@ -12,11 +12,11 @@
 
 (declare app-inner-model-routes show-id create)
 
-(defn show-id [_id request]
+(defn show-id [request]
   (log/info (:params request))
-  (response-json {:message "show model!" :name (get-in request [:params :name]) :project _id}))
+  (response-json {:message "show model!" :name (get-in request [:params :name]) :project (get-in request [:params :_id])}))
 
-(defn create [_id request]
+(defn create [request]
   (log/info request)
   (let [db (db-source/db "test")
         coll "documents"
@@ -29,9 +29,9 @@
     ; :body    (str "project Create!")}
     ))
 
-(defn app-inner-model-routes [_id]
+(defn app-inner-model-routes []
   (routes
-    (GET "/show/:name" request (show-id _id request))
-    (POST "/create" request (create _id request))
-    (POST "/destory/:model" [_id model] (str "project " _id " model destory + " model))
-    (POST "/update/:model" [_id model] (str "project " _id "model update + " model))))
+    (GET "/show/:name" request (show-id request))
+    (POST "/create" request (create request))
+    (POST "/destory/:model" [_id model] (str "project " " model destory + " model))
+    (POST "/update/:model" [_id model] (str "project " "model update + " model))))

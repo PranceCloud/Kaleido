@@ -2,8 +2,8 @@
   (:gen-class)
   (:use ring.adapter.jetty)
   (:require [kaleido.tools :refer :all]
-            ;[kaleido.setting :as app-setting]
-            ;[kaleido.source.mongodb :as app-source]
+    ;[kaleido.setting :as app-setting]
+    ;[kaleido.source.mongodb :as app-source]
             [kaleido.suppose.session :refer [mongodb-store]]
             [compojure.core :refer :all]
             [compojure.route :as route]
@@ -17,7 +17,7 @@
             [ring.middleware.json :refer [wrap-json-params]]
             [ring.util.response :refer [response]]
             [ring.middleware.resource :refer :all]
-            ;[ring.handler.dump :as ring-handle-dump]
+    ;[ring.handler.dump :as ring-handle-dump]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
 
 ;[ring.util.response :refer [content-type]]
@@ -61,7 +61,7 @@
            (context "/project" []
              (route-project/app-inner-project-routes))
            (context "/auth" []
-             (route-auth/app-inner-auth-routes "__root__"))
+             (route-auth/app-inner-auth-routes))
            ;(context "/char" []
            ;  (route-char/websocket-routes))
            (route/not-found "Not Found"))

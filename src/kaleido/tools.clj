@@ -1,6 +1,6 @@
 (ns kaleido.tools
   (:require [compojure.core :refer :all]
-            [clojure.tools.logging :as log]
+            ;[clojure.tools.logging :as log]
             [cheshire.core :refer :all]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.json :refer [wrap-json-params]]

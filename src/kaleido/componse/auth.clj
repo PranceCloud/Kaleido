@@ -13,9 +13,10 @@
 
 (declare login logout)
 
-(defn login [require project-id]
+(defn login [require]
   (log/info (:login_name (:params require)))
   (let [params (:params require)
+        _id (:_id params)
         login_name (:login_name params)
         login_password (:login_password params)
         salt (:csrf params)
@@ -27,15 +28,15 @@
       (let [session (:session require)]
         ;(log/info (str "session => " session))
         ;(log/info {:message (str auth_status) :value auth_account})
-        (assoc session :account auth_account)))
+        (assoc session :account {:project {:id _id :auth auth_account}})))
     (response-json {:status auth_status :message (:message auth_login) :value auth_account}))
   )
 
-(defn logout [require project-id]
+(defn logout [require]
   (-> (response-json {:status true})
       (assoc :session nil)))
 
-(defn change [require project-id]
+(defn change [require]
   (let [params (:params require)
         login_name (:login_name params)
         login_password (:login_password params)
@@ -43,7 +44,7 @@
     (log/info change-account)
     (response-json change-account)))
 
-(defn create [require project-id]
+(defn create [require]
   (let [params (:params require)
         login_name (:login_name params)
         login_password (:login_password params)
@@ -52,17 +53,17 @@
     (log/info params)
     (response-json create-account)))
 
-(defn destory [require project-id]
+(defn destory [require]
   (let [params (:params require)
         login_name (:login_name params)
         req (account/destory {:login_name login_name})]
     (response-json req)))
 
-(defn app-inner-auth-routes [project-id]
+(defn app-inner-auth-routes []
   (routes
-    (GET "/api" [] (str "API " project-id))
-    (POST "/login" request (login request project-id))
-    (DELETE "/destory" request (destory request project-id))
-    (POST "/create" request (create request project-id))
-    (POST "/update" request (change request project-id))
-    (POST "/logout" request (logout request project-id))))
+    (GET "/api" request (str "API " (get-in request [:params :_id]) "!"))
+    (POST "/login" request (login request))
+    (DELETE "/destory" request (destory request))
+    (POST "/create" request (create request))
+    (POST "/update" request (change request))
+    (POST "/logout" request (logout request))))

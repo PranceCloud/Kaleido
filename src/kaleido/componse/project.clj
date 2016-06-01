@@ -38,6 +38,6 @@
     (DELETE "/:_id/destory" [_id] (str "project destory by " _id))
     (POST "/:_id/update" [_id] (str "project update + " _id))
     (context "/:_id/model" [_id]
-      (route-model/app-inner-model-routes _id))
+      (route-model/app-inner-model-routes))
     (context "/:_id/auth" [_id]
-      (route-auth/app-inner-auth-routes _id))))
+      (route-auth/app-inner-auth-routes))))
