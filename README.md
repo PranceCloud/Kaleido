@@ -1,14 +1,13 @@
-# hong2-lein
+# Kaleido
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to Model Web Service by Events and PreScripts.
 
 ## Usage
 
-FIXME
+Waiting...
 
 ## License
 
 Copyright © 2016 FIXME
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under Apache License Version 2.0.
