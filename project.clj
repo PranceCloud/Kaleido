@@ -1,4 +1,4 @@
-(defproject hong2-lein "0.1.0-SNAPSHOT"
+(defproject kaleido "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://www.91here.com/hong2"
   :license {:name "Eclipse Public License"
@@ -22,7 +22,7 @@
                  [ring/ring-jetty-adapter "1.4.0"]]
   :plugins [[lein-ring "0.9.7"]]
   ;:ring {:core hong2-lein.core/app}
-  :ring {:handler       hong2-lein.core/app
+  :ring {:handler       kaleido.core/app
          :auto-reload?  true
          :auto-refresh? true}
   :main ^:skip-aot hong2-lein.core

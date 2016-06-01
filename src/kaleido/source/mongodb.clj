@@ -1,4 +1,4 @@
-(ns hong2-lein.source.mongodb
+(ns kaleido.source.mongodb
   (:require [monger.core :as mg])
   (:import [com.mongodb MongoOptions ServerAddress]))
 

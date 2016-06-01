@@ -1,4 +1,4 @@
-(ns hong2-lein.tools
+(ns kaleido.tools
   (:require [compojure.core :refer :all]
             [clojure.tools.logging :as log]
             [cheshire.core :refer :all]

@@ -1,4 +1,4 @@
-(ns hong2-lein.suppose.session
+(ns kaleido.suppose.session
   (:require [clojure.tools.logging :as log]
             [monger.collection :as mc]
             [clj-time.core :as t]

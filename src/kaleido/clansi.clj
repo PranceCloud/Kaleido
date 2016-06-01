@@ -1,4 +1,4 @@
-(ns hong2-lein.clansi
+(ns kaleido.clansi
   (require [clojure.tools.logging :as log]))
 
 (defn info [& args]

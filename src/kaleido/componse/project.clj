@@ -1,10 +1,10 @@
-(ns hong2-lein.componse.project
-  (:require [hong2-lein.tools :refer :all]
+(ns kaleido.componse.project
+  (:require [kaleido.tools :refer :all]
             ;[monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
-            [hong2-lein.source.mongodb :as db-source]
+            [kaleido.source.mongodb :as db-source]
     ;[compojure.route :as route]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [header response]]

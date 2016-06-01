@@ -1,4 +1,4 @@
-;(ns hong2-lein.componse.ws
+;(ns kaleido.componse.ws
 ;  (:require [compojure.core :refer [GET defroutes wrap-routes]]
 ;            [clojure.tools.logging :as log]
 ;            [immutant.web.async :as async]))

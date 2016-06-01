@@ -1,4 +1,4 @@
-(ns hong2-lein.setting
+(ns kaleido.setting
   (:gen-class))
 
 (def system-db (str "test"))

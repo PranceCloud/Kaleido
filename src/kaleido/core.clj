@@ -1,15 +1,15 @@
-(ns hong2-lein.core
+(ns kaleido.core
   (:gen-class)
   (:use ring.adapter.jetty)
-  (:require [hong2-lein.tools :refer :all]
-            ;[hong2-lein.setting :as app-setting]
-            ;[hong2-lein.source.mongodb :as app-source]
-            [hong2-lein.suppose.session :refer [mongodb-store]]
+  (:require [kaleido.tools :refer :all]
+            ;[kaleido.setting :as app-setting]
+            ;[kaleido.source.mongodb :as app-source]
+            [kaleido.suppose.session :refer [mongodb-store]]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [hong2-lein.componse.project :as route-project]
-            [hong2-lein.componse.model :as route-model]
-            [hong2-lein.componse.auth :as route-auth]
+            [kaleido.componse.project :as route-project]
+            [kaleido.componse.model :as route-model]
+            [kaleido.componse.auth :as route-auth]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer [wrap-session]]
             [clojure.tools.logging :as log]
@@ -22,7 +22,7 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
 
 ;[ring.util.response :refer [content-type]]
-;[hong2-lein.componse.ws :as route-char]
+;[kaleido.componse.ws :as route-char]
 ;[ring.middleware.logger :as logger]
 
 (def hong2-version "0.0.1")

@@ -1,4 +1,4 @@
-(ns hong2-lein.core-test
+(ns kaleido.core-test
   (:require [clojure.test :refer :all]
             [hong2-lein.core :refer :all]))
 

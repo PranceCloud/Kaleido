@@ -1,11 +1,11 @@
-(ns hong2-lein.componse.auth
-  (:require [hong2-lein.tools :refer :all]
-            [hong2-lein.suppose.account :as account]
+(ns kaleido.componse.auth
+  (:require [kaleido.tools :refer :all]
+            [kaleido.suppose.account :as account]
             ;[monger.core :as mg]
             ;[monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
-            ;[hong2-lein.source.mongodb :as db-source]
+            ;[kaleido.source.mongodb :as db-source]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])

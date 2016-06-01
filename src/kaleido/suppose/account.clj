@@ -1,10 +1,10 @@
-(ns hong2-lein.suppose.account
+(ns kaleido.suppose.account
   (:use digest)
-  (:require [hong2-lein.setting :as app-setting]
+  (:require [kaleido.setting :as app-setting]
             [compojure.core :refer :all]
-            [hong2-lein.tools :refer :all]
+            [kaleido.tools :refer :all]
             [clojure.tools.logging :as log]
-            [hong2-lein.source.mongodb :as db-source]
+            [kaleido.source.mongodb :as db-source]
             [monger.collection :as mc]
             [monger.conversion :refer [from-db-object]]))
 
