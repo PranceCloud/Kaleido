@@ -13,7 +13,6 @@
 
 (def web-http-url (str host "/"))
 (def web-csrf-url (str host "/csrf"))
-
 (def manager-test-url (str host manager-url))
 (def manager-auth-test-url (str host manager-url "/auth/login"))
 (def project-test-url (str host manager-url "/projects"))
