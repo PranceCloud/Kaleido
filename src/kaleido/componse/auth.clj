@@ -1,15 +1,15 @@
 (ns kaleido.componse.auth
   (:require [kaleido.tools :refer :all]
             [kaleido.suppose.account :as account]
-    ;[monger.core :as mg]
-    ;[monger.collection :as mc]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
-    ;[kaleido.source.mongodb :as db-source]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [response]]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
-  )
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+    ;[monger.core :as mg]
+    ;[monger.collection :as mc]
+    ;[kaleido.source.mongodb :as db-source]
+            ))
 
 (declare login logout)
 
@@ -32,7 +32,7 @@
     (response-json {:status auth_status :message (:message auth_login) :value auth_account}))
   )
 
-(defn logout [require]
+(defn logout []
   (-> (response-json {:status true})
       (assoc :session nil)))
 
@@ -66,4 +66,4 @@
     (DELETE "/destory" request (destory request))
     (POST "/create" request (create request))
     (POST "/update" request (change request))
-    (POST "/logout" request (logout request))))
+    (POST "/logout" [] (logout))))

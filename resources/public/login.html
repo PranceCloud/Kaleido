@@ -34,7 +34,7 @@
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
               jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
             });
-            $.post('/auth/update',
+            $.post('/m/auth/update',
                 {
                   'login_name': "test",
                   'login_password': md5("test"),
@@ -63,7 +63,7 @@
               jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
             });
             $.ajax({
-              url: '/auth/destory',
+              url: '/m/auth/destory',
               method: 'delete',
               data: {
                 'login_name': $('#login_name').val(),
@@ -92,7 +92,7 @@
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
               jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
             });
-            $.post('/auth/create',
+            $.post('/m/auth/create',
                 {
                   'login_name': $('#login_name').val(),
                   'login_password': md5(md5($('#login_password').val()) + data.csrf),
@@ -120,7 +120,7 @@
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
               jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
             });
-            $.post('/auth/login',
+            $.post('/m/auth/login',
                 {
                   'login_name': $('#login_name').val(),
                   'login_password': md5(md5($('#login_password').val()) + data.csrf),

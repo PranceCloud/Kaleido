@@ -29,4 +29,5 @@
   :repl-options {:init-ns hong2-lein.core}
   :profiles {:uberjar {:aot :all}
              :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
-                                  [ring/ring-mock "0.3.0"]]}})
+                                  [ring/ring-mock "0.3.0"]
+                                  [midje "1.8.3"]]}})

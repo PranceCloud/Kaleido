@@ -2,11 +2,13 @@
   (:gen-class)
   (:use ring.adapter.jetty)
   (:require [kaleido.tools :refer :all]
+            [kaleido.setting :refer :all]
     ;[kaleido.setting :as app-setting]
     ;[kaleido.source.mongodb :as app-source]
             [kaleido.suppose.session :refer [mongodb-store]]
             [compojure.core :refer :all]
             [compojure.route :as route]
+            [kaleido.componse.manager :as route-manager]
             [kaleido.componse.project :as route-project]
             [kaleido.componse.auth :as route-auth]
             [ring.middleware.anti-forgery :refer :all]
@@ -24,16 +26,15 @@
 ;[kaleido.componse.ws :as route-char]
 ;[ring.middleware.logger :as logger]
 
-(def hong2-version "0.0.1")
+(def -version "0.0.1")
 
 (defn pong [require]
   (log/info (:session require))
   (let [session (:session require)
         count (:count session 0)
-        session (assoc session :count (inc count))]
-    (-> (response {:message "pong" :count count})
-        (assoc :session session))
-    ))
+        session (assoc session :count (inc (if (>= count 10) 0 count)))]
+    (-> (response {:message "pong" :version -version :count count})
+        (assoc :session session))))
 
 (defn remote-command [require]
   ;(log/info require)
@@ -49,27 +50,26 @@
   )
 
 
-(defroutes app-routes
-           (GET "/" [] "Hong2 Project")
-           (GET "/version" [] (str hong2-version))
-           (POST "/remote" require (remote-command require))
-           (GET "/remote" require (remote-command require))
-           (GET "/ping" require (pong require))
-           (GET "/csrf" [] (response-json {:csrf *anti-forgery-token*}))
-           ;(context "/" []
-           ;         (app-root-routes))
-           (context "/project" []
-             (route-project/app-inner-project-routes))
-           (context "/auth" []
-             (route-auth/app-inner-auth-routes))
-           ;(context "/char" []
-           ;  (route-char/websocket-routes))
-           (route/not-found "Not Found"))
+(defn app-routes
+  []
+  (routes
+    (GET "/" [] "Kaleido Project")
+    (GET "/ping" require (pong require))
+    (POST "/remote" require (remote-command require))
+    (GET "/csrf" [] (response-json {:csrf *anti-forgery-token*}))
+    (context manager-url []
+      (route-manager/app-inner-manager-routes))
+    (context project-prefix-url []
+      (route-project/app-inner-project-routes))
+    ;(context "/char" []
+    ;  (route-char/websocket-routes))
+    (route/not-found "Not Found"))
+  )
 
 (def app
   ;(wrap-json-params (wrap-json-response app-routes))
   (wrap-defaults
-    (-> app-routes
+    (-> (app-routes)
         (wrap-resource "resources")
         ;(wrap-session {:store (mongodb-store (app-source/db app-setting/system-db) app-setting/system-session {})})
         ;(wrap-anti-forgery)
