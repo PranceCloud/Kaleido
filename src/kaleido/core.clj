@@ -8,9 +8,9 @@
             [kaleido.suppose.session :refer [mongodb-store]]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [kaleido.componse.manager :as route-manager]
+            [kaleido.componse.admin :as route-admin]
             [kaleido.componse.project :as route-project]
-            [kaleido.componse.auth :as route-auth]
+            ;[kaleido.componse.auth :as route-auth]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer [wrap-session]]
             [clojure.tools.logging :as log]
@@ -58,7 +58,7 @@
     (POST "/remote" require (remote-command require))
     (GET "/csrf" [] (response-json {:csrf *anti-forgery-token*}))
     (context manager-url []
-      (route-manager/app-inner-manager-routes))
+      (route-admin/app-inner-admin-routes))
     (context project-prefix-url []
       (route-project/app-inner-project-routes))
     ;(context "/char" []

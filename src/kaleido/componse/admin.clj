@@ -1,4 +1,4 @@
-(ns kaleido.componse.manager
+(ns kaleido.componse.admin
   (:use kaleido.tools)
   (:require [kaleido.tools :refer :all]
             [monger.operators :refer :all]
@@ -14,7 +14,7 @@
   [require]
   (str require))
 
-(defn app-inner-manager-routes []
+(defn app-inner-admin-routes []
   (routes
     (GET "/" [] (str "m"))
     (GET "/projects" require (projects require))
