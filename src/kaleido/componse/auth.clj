@@ -22,14 +22,15 @@
         salt (:csrf params)
         auth_login (account/auth login_name login_password salt)
         auth_status (:status auth_login)
-        auth_account (dissoc (:account auth_login) :_id :login_password)]
-    (log/info params)
+        auth_account (dissoc (:account auth_login) :_id :login_password)
+        session (:session require)]
     (if (= auth_status true)
-      (let [session (:session require)]
-        ;(log/info (str "session => " session))
-        ;(log/info {:message (str auth_status) :value auth_account})
-        (assoc session :account {:project {:id _id :auth auth_account}})))
-    (response-json {:status auth_status :message (:message auth_login) :value auth_account}))
+      (let [session (assoc session :account {:project {:id _id :auth auth_account}})]
+        (-> (response-json {:status auth_status :message (:message auth_login) :value auth_account})
+            (assoc :session session)))
+      (response-json {:status auth_status :message (:message auth_login) :value auth_account})
+      )
+    )
   )
 
 (defn logout []

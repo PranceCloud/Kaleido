@@ -1,14 +1,14 @@
 (ns kaleido.setting
   (:gen-class))
 
-
-(def manager-url (str "/m"))
+(def -version "0.0.1")
 
 (def base-url (str "/"))
-
+(def manager-url (str "/m"))
+(def debug-url  "/debug")
 (def project-prefix-url "/project")
 
 (def system-db (str "test"))
+(def system-auth "Account")
 
-(def system-auth (str "Account"))
-(def system-session (str "Session"))
+;(def system-session (str "Session"))

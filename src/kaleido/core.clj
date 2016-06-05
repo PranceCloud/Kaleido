@@ -10,7 +10,8 @@
             [compojure.route :as route]
             [kaleido.componse.admin :as route-admin]
             [kaleido.componse.project :as route-project]
-            ;[kaleido.componse.auth :as route-auth]
+            [kaleido.componse.debug :as route-debug]
+    ;[kaleido.componse.auth :as route-auth]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer [wrap-session]]
             [clojure.tools.logging :as log]
@@ -26,10 +27,8 @@
 ;[kaleido.componse.ws :as route-char]
 ;[ring.middleware.logger :as logger]
 
-(def -version "0.0.1")
 
 (defn pong [require]
-  (log/info (:session require))
   (let [session (:session require)
         count (:count session 0)
         session (assoc session :count (inc (if (>= count 10) 0 count)))]
@@ -49,6 +48,11 @@
   ;(str "HEELLO")
   )
 
+(defn get-session [require]
+  (let [session (:session require)]
+    (log/info (str "session => " session))
+    ;(log/info {:message (str auth_status) :value auth_account})
+    (response-json session)))
 
 (defn app-routes
   []
@@ -57,6 +61,9 @@
     (GET "/ping" require (pong require))
     (POST "/remote" require (remote-command require))
     (GET "/csrf" [] (response-json {:csrf *anti-forgery-token*}))
+    (GET "/me" require (get-session require))
+    (context debug-url []
+      (route-debug/app-inner-debug-routes))
     (context manager-url []
       (route-admin/app-inner-admin-routes))
     (context project-prefix-url []

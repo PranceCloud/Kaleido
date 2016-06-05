@@ -8,6 +8,7 @@
     ;[compojure.route :as route]
             [kaleido.componse.model :as route-model]
             [kaleido.componse.auth :as route-auth]
+            [kaleido.componse.event :as route-event]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [header response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
@@ -40,4 +41,7 @@
     (context "/:_id/model" [_id]
       (route-model/app-inner-model-routes))
     (context "/:_id/auth" [_id]
-      (route-auth/app-inner-auth-routes))))
+      (route-auth/app-inner-auth-routes))
+    (context "/:_id/event" [_id]
+      (route-event/app-inner-event-routes))
+    ))

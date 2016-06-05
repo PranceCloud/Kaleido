@@ -30,4 +30,5 @@
   :profiles {:uberjar {:aot :all}
              :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring/ring-mock "0.3.0"]
-                                  [midje "1.8.3"]]}})
+                                  [midje "1.8.3"]
+                                  [hiccup "1.0.5"]]}})

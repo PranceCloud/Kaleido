@@ -19,12 +19,13 @@
     (log/info find-account)
     (log/info (str "acount's password -> " account-password))
     (if (empty? find-account)
-      {:status false :account {}}
-      (let [real-code-password (digest/md5 (str account-password salt))]
+      {:status false :message "bad account" :account {}}
+      (let [real-code-password (digest/md5 (str account-password salt))
+            login-status (= real-code-password login-password)]
         (log/info (str "real-code-password : " real-code-password))
         (log/info "-")
         (log/info (str "login-password : " login-password))
-        {:status (= real-code-password login-password) :account find-account}))
+        {:status (= real-code-password login-password) :message "" :account (if login-status find-account nil)}))
     )
   )
 

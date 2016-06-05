@@ -18,5 +18,5 @@
   (routes
     (GET "/" [] (str "m"))
     (GET "/projects" require (projects require))
-    (context "/auth" [_id]
+    (context "/auth" []
       (route-auth/app-inner-auth-routes))))
