@@ -8,7 +8,8 @@
 (def debug-url  "/debug")
 (def project-prefix-url "/project")
 
-(def system-db (str "test"))
+(def system-db (str "kaleido"))
 (def system-auth "Account")
+(def system-project "Project")
 
 ;(def system-session (str "Session"))

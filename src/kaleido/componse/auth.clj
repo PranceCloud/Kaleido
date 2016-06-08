@@ -9,23 +9,25 @@
     ;[monger.core :as mg]
     ;[monger.collection :as mc]
     ;[kaleido.source.mongodb :as db-source]
-            ))
+            [kaleido.setting :as app-setting]))
 
 (declare login logout)
 
 (defn login [require]
   (log/info (:login_name (:params require)))
+  (log/info (get-in require [:params :_id]))
   (let [params (:params require)
-        _id (:_id params)
+        project (if (empty? (:_id params)) app-setting/system-db (:_id params))
         login_name (:login_name params)
         login_password (:login_password params)
         salt (:csrf params)
-        auth_login (account/auth login_name login_password salt)
+        auth_login (account/auth login_name login_password salt project)
         auth_status (:status auth_login)
         auth_account (dissoc (:account auth_login) :_id :login_password)
         session (:session require)]
+    (log/info (str "!!!!!!!!" project))
     (if (= auth_status true)
-      (let [session (assoc session :account {:project {:id _id :auth auth_account}})]
+      (let [session (assoc session :account {project {:auth auth_account}})]
         (-> (response-json {:status auth_status :message (:message auth_login) :value auth_account})
             (assoc :session session)))
       (response-json {:status auth_status :message (:message auth_login) :value auth_account})
@@ -39,32 +41,35 @@
 
 (defn change [require]
   (let [params (:params require)
+        project (if (empty? (:_id params)) app-setting/system-db (:_id params))
         login_name (:login_name params)
         login_password (:login_password params)
-        change-account (account/change {:login_name login_name :login_password login_password})]
+        change-account (account/change {:login_name login_name :login_password login_password} project)]
     (log/info change-account)
     (response-json change-account)))
 
 (defn create [require]
   (let [params (:params require)
+        project (if (empty? (:_id params)) app-setting/system-db (:_id params))
         login_name (:login_name params)
         login_password (:login_password params)
-        create-account (account/create {:login_name login_name :login_password login_password})]
+        create-account (account/create {:login_name login_name :login_password login_password} project)]
     (log/info "create-account => ")
     (log/info params)
     (response-json create-account)))
 
 (defn destory [require]
   (let [params (:params require)
+        project (if (empty? (:_id params)) app-setting/system-db (:_id params))
         login_name (:login_name params)
-        req (account/destory {:login_name login_name})]
+        req (account/destory {:login_name login_name} project)]
     (response-json req)))
 
 (defn app-inner-auth-routes []
   (routes
-    (GET "/api" request (str "API " (get-in request [:params :_id]) "!"))
-    (POST "/login" request (login request))
-    (DELETE "/destory" request (destory request))
-    (POST "/create" request (create request))
-    (POST "/update" request (change request))
-    (POST "/logout" [] (logout))))
+    (GET "/api" require (str "API !" (get-in require [:params :_id]) "!"))
+    (POST "/login" require (login require))
+    (DELETE "/destory" require (destory require))
+    (POST "/create" require (create require))
+    (POST "/update" require (change require))
+    (GET "/logout" [] (logout))))

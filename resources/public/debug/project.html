@@ -1,0 +1,94 @@
+<project>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-header">
+        <h3 id="forms">Project { opts.project_name }</h3>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <ul class="nav nav-pills">
+        <li each={ action_menu } class="{ active: active }">
+          <a onclick="{ select_menu }" style="cursor: pointer">{ title }</a>
+        </li>
+        <!--href="#project/{ parent.opts.project_name }/{ action }"-->
+        <!--<li class="{ model_active } small"><a href="#project/blog/model">Model</a></li>-->
+        <!--<li class="{ event_active } small" show={ opts.admin_role_name== opts.userrole }><a href="#project/blog/event">Event</a>-->
+        <!--</li>-->
+      </ul>
+    </div>
+
+    <div>
+      { info }
+    </div>
+  </div>
+
+  <script>
+    var self = this
+    self.action_menu = [
+      {id: 0, action: 'info', title: 'Info', active: true},
+      {id: 1, action: 'model', title: 'Model', active: false, show: (self.admin_role_name == self.userrole)},
+      {id: 2, action: 'event', title: 'Event', active: false}
+    ];
+
+    select_menu(e)
+    {
+//      console.log(e.item);
+      _.map(self.action_menu, function (v, k) {
+        self.action_menu[k]['active'] = false
+      });
+      self.action_menu[e.item.id]['active'] = true;
+      switch (e.item.action) {
+        case 'info':
+          self.action_info();
+          break;
+        case 'model':
+          self.action_model();
+          break;
+        case 'event':
+          self.action_event();
+          break;
+      }
+      self.update();
+    }
+
+    action_info()
+    {
+      self.info = "fFF"
+    }
+
+    action_model()
+    {
+      self.info = "model"
+    }
+
+    action_event()
+    {
+      self.info = "event"
+    }
+
+//    select_menu(self.action_menu[0]);
+
+    //    var subRoute = riot.route.create();
+    //    subRoute('project/*/model', function (name) {
+    //      self.info = 'project/' + name + '/model';
+    //      self.action_menu[0]['active'] = true;
+    //      console.log(self.action_menu);
+    //      self.update();
+    //    });
+    //
+    //    subRoute('project/*/event', function (name) {
+    //      self.info = 'project/*/..';
+    //
+    //      self.action_menu[1]['active'] = true;
+    //      console.log(self.action_menu);
+    //      self.update();
+    //    });
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login/' + opts.project_name);
+        return;
+      }
+      self.action_info()
+    })
+  </script>
+</project>

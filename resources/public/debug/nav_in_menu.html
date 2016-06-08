@@ -1,20 +1,17 @@
 <nav_in_menu>
   <ul class="nav navbar-nav">
-    <li class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Projects { opts.project_name }
-        <span class="caret"></span></a>
-      <ul class="dropdown-menu" aria-labelledby="themes">
-        <li><a href="#project/admin">Admin</a></li>
-        <li class="divider"></li>
-        <li><a href="#project/fp">First Project</a></li>
-        <li><a href="#project/sp">Second Project</a></li>
-      </ul>
+    <li show={ opts.is_login && opts.is_admin }>
+      <a href="#admin"><i class="glyphicon glyphicon-fire"></i> Admin</a>
+    </li>
+    <li class="dropdown" show={ opts.is_login && (!opts.is_admin) }>
+      <a href="#project/{ opts.project_name }">
+        <i class="glyphicon glyphicon-inbox"></i> Project - { opts.project_name }</a>
     </li>
     <li>
-      <a href="#help">Help</a>
+      <a href="#help"><i class="glyphicon glyphicon-road"></i> Help</a>
     </li>
     <li>
-      <a href="http://www.91here.com/kaleido" target="_blank">Blog</a>
+      <a href="http://www.91here.com/kaleido" target="_blank"><i class="glyphicon glyphicon-link"></i> Blog</a>
     </li>
   </ul>
 

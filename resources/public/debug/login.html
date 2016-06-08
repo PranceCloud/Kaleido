@@ -4,7 +4,15 @@
       <div class="well bs-component">
         <form class="form-horizontal" method="post">
           <fieldset>
-            <legend>Project <b>{ opts.project_name || 'Untitled' }</b> auth</legend>
+            <legend>Auth</legend>
+            <div class="form-group">
+              <label for="project_name" class="col-lg-2 control-label">Project</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" value="{ opts.project_name }" id="project_name"
+                       name="project_name"
+                       placeholder="Name">
+              </div>
+            </div>
             <div class="form-group { login_name_has_error }">
               <label for="login_name" class="col-lg-2 control-label">Name</label>
               <div class="col-lg-10">
@@ -33,6 +41,8 @@
         </form>
       </div>
     </div>
+  </div>
+  <div class="row page-header">
     <div class="col-lg-4 col-lg-offset-1">
       FE { message }
     </div>
@@ -46,21 +56,22 @@
 
     login()
     {
-      if (opts.project_name == "") {
+      if ($("#project_name").val().length == 0) {
         self.login_name_has_error = "has-error"
         self.update()
-      } else if (self.login_name.value == "") {
+      } else if ($("#login_name").val().length == 0) {
         self.login_name_has_error = "has-error"
         self.update()
-      } else if (self.login_password.value == "") {
+      } else if ($("#login_password").val().length == 0) {
         self.login_name_has_error = ""
         self.login_password_has_error = "has-error"
         self.update()
-      } else
-        opts.login({
+      } else {
+        opts.login($("#project_name").val(), {
           login_name: self.login_name.value,
           login_password: self.login_password.value
         })
+      }
     }
 
     opts.on('login', function (json) {

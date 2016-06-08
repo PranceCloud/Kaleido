@@ -7,8 +7,8 @@
             [kaleido.setting :refer :all]
             [clj-http.client :as client]))
 
-(def host "http://localhost:3000")
-(def manager-root-name "test")
+(def host "http://127.0.0.1:3000")
+(def manager-root-name "admin")
 (def manager-root-password "test")
 
 (def web-http-url (str host "/"))
@@ -35,11 +35,11 @@
   [user-name user-password]
   (let [my-cs (clj-http.cookies/cookie-store)
         csrf (get-csrf my-cs)
-        en-password (digest/md5 (str (digest/md5 user-name) csrf))
+        en-password (digest/md5 (str (digest/md5 user-password) csrf))
         g (client/post
             manager-auth-test-url
             {:headers      {"X-CSRF-Token" csrf}
-             :form-params  {:login_name user-password :login_password en-password :csrf csrf}
+             :form-params  {:login_name user-name :login_password en-password :csrf csrf}
              :cookie-store my-cs})]
     g))
 

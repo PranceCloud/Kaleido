@@ -1,6 +1,7 @@
 (ns kaleido.componse.admin
   (:use kaleido.tools)
   (:require [kaleido.tools :refer :all]
+            [kaleido.suppose.project :as project-model]
             [monger.operators :refer :all]
             [compojure.core :refer :all]
             [clojure.tools.logging :as log]
@@ -12,11 +13,11 @@
 
 (defn projects
   [require]
-  (str require))
+  (response-json (project-model/get-all-name)))
 
 (defn app-inner-admin-routes []
   (routes
-    (GET "/" [] (str "m"))
+    (GET "/" require (str "m" (get-in require [:params :_id]) "!"))
     (GET "/projects" require (projects require))
     (context "/auth" []
       (route-auth/app-inner-auth-routes))))

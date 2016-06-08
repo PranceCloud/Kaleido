@@ -1,6 +1,6 @@
 (defproject kaleido "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
-  :url "http://www.91here.com/hong2"
+  :url "http://www.91here.com/kaleido"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :min-lein-version "2.0.0"
@@ -25,8 +25,8 @@
   :ring {:handler       kaleido.core/app
          :auto-reload?  true
          :auto-refresh? true}
-  :main ^:skip-aot hong2-lein.core
-  :repl-options {:init-ns hong2-lein.core}
+  :main ^:skip-aot kaleido.core
+  :repl-options {:init-ns kaleido.core}
   :profiles {:uberjar {:aot :all}
              :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring/ring-mock "0.3.0"]
