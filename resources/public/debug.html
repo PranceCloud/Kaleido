@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <link rel="stylesheet" href="//cdn.css.net/libs/bootswatch/3.3.6/lumen/bootstrap.min.css" media="screen">
+  <!--<link rel="stylesheet" href="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.css" media="screen">-->
+
   <script src="//cdn.css.net/libs/riot/2.4.1/riot+compiler.js"></script>
   <style>
     body {
@@ -285,6 +287,7 @@
 
 <script src="//cdn.css.net/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.css.net/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--<script src="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.js"></script>-->
 <script src="//cdn.css.net/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="static/js/md5.min.js"></script>
 <script src="static/js/kaleido.js"></script>
@@ -301,8 +304,14 @@
 <script type="riot/tag" src="debug/admin/project.html"></script>
 <script type="riot/tag" src="debug/admin/account.html"></script>
 <script type="riot/tag" src="debug/admin/event.html"></script>
+<script type="riot/tag" src="debug/admin/proxy.html"></script>
 
 <script type="riot/tag" src="debug/project.html"></script>
+<script type="riot/tag" src="debug/project/setting.html"></script>
+<script type="riot/tag" src="debug/project/account.html"></script>
+<script type="riot/tag" src="debug/project/route.html"></script>
+<script type="riot/tag" src="debug/project/model.html"></script>
+
 <script type="riot/tag" src="debug/help.html"></script>
 
 <script type="text/javascript">
@@ -313,7 +322,9 @@
   var kaleido_debug = riot.observable();
   kaleido_debug.admin_project = 'kaleido';
   kaleido_debug.project_name = kaleido_debug.admin_project;
-  kaleido_debug.admin_login_url = 'm';
+  kaleido_debug.admin_url = 'm';
+  kaleido_debug.base_url = '/';
+  kaleido_debug.project_prefix_url = 'project';
 
   kaleido_debug.is_login = false;
   kaleido_debug.is_admin = false;
@@ -333,7 +344,7 @@
   };
 
   kaleido_debug.init_projects = function () {
-    $.getJSON('/m/projects', function (projects) {
+    $.getJSON(this.base_url + this.admin_url + '/projects', function (projects) {
       kaleido_debug.projects = projects;
     });
   };
@@ -368,9 +379,9 @@
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
               jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
             });
-            var project_auth_url = kaleido_debug.admin_login_url;
+            var project_auth_url = kaleido_debug.admin_url;
             if (project_name != kaleido_debug.admin_project) {
-              project_auth_url = "project/" + project_name;
+              project_auth_url = kaleido_debug.project_prefix_url + "/" + project_name;
             }
             $.post('/' + project_auth_url + '/auth/login',
                 {
@@ -391,7 +402,7 @@
                       kaleido_debug.is_admin = true;
                       redirect_url = 'admin';
                     } else {
-                      redirect_url = 'project/' + kaleido_debug.project_name;
+                      redirect_url = kaleido_debug.project_prefix_url + "/" + kaleido_debug.project_name;
                     }
                     riot.route(redirect_url);
                     riot.update();

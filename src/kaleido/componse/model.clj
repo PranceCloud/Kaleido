@@ -31,6 +31,7 @@
 
 (defn app-inner-model-routes []
   (routes
+    (GET "/" request (str "models"))
     (GET "/show/:name" request (show-id request))
     (POST "/create" request (create request))
     (POST "/destory/:model" [_id model] (str "project " " model destory + " model))

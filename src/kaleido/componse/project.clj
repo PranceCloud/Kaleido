@@ -9,6 +9,7 @@
             [kaleido.componse.model :as route-model]
             [kaleido.componse.auth :as route-auth]
             [kaleido.componse.event :as route-event]
+            [kaleido.suppose.project :as project]
             [clojure.tools.logging :as log]
             [ring.util.response :refer [header response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]])
@@ -17,7 +18,7 @@
 (declare app-inner-project-routes show)
 
 (defn show [_id]
-  (response-json {:name "project11" :baz 13333}))
+  (response-json (project/get-by-name _id)))
 
 (defn create [request]
   (log/info request)
@@ -33,8 +34,7 @@
   (routes
     (POST "/create" require (create require))
     (GET "/create" require (create require))
-    (GET "/" [] (str "project ALL"))
-    (GET "/show/:_id" [_id] (show _id))
+    (GET "/:_id/" [_id] (show _id))
     (POST "/:_id/search" [] (str "project + "))
     (DELETE "/:_id/destory" [_id] (str "project destory by " _id))
     (POST "/:_id/update" [_id] (str "project update + " _id))

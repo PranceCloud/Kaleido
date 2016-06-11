@@ -7,8 +7,10 @@
     </div>
     <div class="col-lg-12">
       <ul class="nav nav-pills">
-        <li each={ action_menu } class="{ active: active }">
-          <a onclick="{ select_menu }" style="cursor: pointer">{ title }</a>
+        <li each={ action_menu } class="{ active: active }" show="{ show: show }">
+          <a onclick="{ select_menu }" style="cursor: pointer">
+            <i class="glyphicon glyphicon-{ icon }" show="{ icon: icon }"></i>
+            { title }</a>
         </li>
         <!--href="#project/{ parent.opts.project_name }/{ action }"-->
         <!--<li class="{ model_active } small"><a href="#project/blog/model">Model</a></li>-->
@@ -17,38 +19,71 @@
       </ul>
     </div>
 
-    <div>
-      { info }
+    <div class="col-lg-12" id="work_area" style="margin-top: 10px;">
+
     </div>
   </div>
 
   <script>
     var self = this
+
     self.action_menu = [
-      {id: 0, action: 'info', title: 'Info', active: true},
-      {id: 1, action: 'model', title: 'Model', active: false, show: (self.admin_role_name == self.userrole)},
-      {id: 2, action: 'event', title: 'Event', active: false}
+      {id: 0, action: 'info', title: 'Info', active: true, show: true},
+      {id: 1, action: 'setting', title: 'Setting', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 2, action: 'model', title: 'Model', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 3, action: 'event', title: 'Event', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 4, action: 'proxy', title: 'Proxy', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 5, action: 'account', title: 'Account', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 6, action: 'logger', title: 'Logger', active: false, show: true, icon: "eye-open"},
+      {
+        id: 7,
+        action: 'route',
+        title: 'Route',
+        active: false,
+        icon: "eye-open",
+        show: (opts.admin_role_name == opts.auth.role)
+      }
     ];
 
     select_menu(e)
     {
-//      console.log(e.item);
       _.map(self.action_menu, function (v, k) {
         self.action_menu[k]['active'] = false
       });
       self.action_menu[e.item.id]['active'] = true;
+      if (_.contains(["setting", "account", "route", "model"], e.item.action)) {
+        riot.mount(document.getElementById('work_area'), 'project_' + e.item.action, opts);
+      } else
+        riot.mount(document.getElementById('work_area'), 'admin_' + e.item.action, opts);
       switch (e.item.action) {
         case 'info':
           self.action_info();
           break;
-        case 'model':
-          self.action_model();
-          break;
         case 'event':
           self.action_event();
           break;
+        case 'model':
+          self.action_model();
+          break;
+        case 'logger':
+          self.action_logger();
+          break;
+        case 'setting':
+          self.action_setting();
+          break;
+        case 'proxy':
+          self.action_proxy();
+          break;
+        case 'account':
+          self.action_account();
+          break;
+        case 'route':
+          self.action_route();
+          break;
+        default:
+          riot.mount(document.getElementById('work_area'), 'Nothing!');
       }
-      self.update();
+//      self.update();
     }
 
     action_info()
@@ -56,39 +91,53 @@
       self.info = "fFF"
     }
 
-    action_model()
-    {
-      self.info = "model"
-    }
-
     action_event()
     {
       self.info = "event"
     }
 
-//    select_menu(self.action_menu[0]);
+    action_model()
+    {
+      self.info = "model"
+    }
 
-    //    var subRoute = riot.route.create();
-    //    subRoute('project/*/model', function (name) {
-    //      self.info = 'project/' + name + '/model';
-    //      self.action_menu[0]['active'] = true;
-    //      console.log(self.action_menu);
-    //      self.update();
-    //    });
-    //
-    //    subRoute('project/*/event', function (name) {
-    //      self.info = 'project/*/..';
-    //
-    //      self.action_menu[1]['active'] = true;
-    //      console.log(self.action_menu);
-    //      self.update();
-    //    });
+    action_logger()
+    {
+      self.info = "logger"
+    }
+
+    action_setting()
+    {
+      self.info = "setting"
+    }
+
+    action_proxy()
+    {
+      self.info = "proxy"
+    }
+
+    action_account()
+    {
+      self.info = "account"
+    }
+
+    action_route()
+    {
+      self.info = "route"
+    }
+
+    self.on('update', function () {
+      console.log("update!");
+    });
+
     self.on('mount', function () {
+      console.log(this.action_menu);
       if (!opts.is_login) {
         riot.route('login/' + opts.project_name);
         return;
       }
-      self.action_info()
+      self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}})
+      self.update();
     })
   </script>
 </project>
