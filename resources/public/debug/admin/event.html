@@ -1,0 +1,45 @@
+<admin_event>
+  <legend></legend>
+  <div class="btn-group">
+    <a class="btn btn-info btn-xs">Create</a>
+    <a href="#" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">Timer</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Before Create Project</a></li>
+      <li><a href="#">Before Update Project</a></li>
+      <li><a href="#">Before Destroy Project</a></li>
+      <li class="divider"></li>
+      <li><a href="#">After Create Project</a></li>
+      <li><a href="#">After Update Project</a></li>
+      <li><a href="#">After Destroy Project</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Custom</a></li>
+    </ul>
+  </div>
+
+  <table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Trigger</th>
+      <th>Parameter</th>
+      <th style="width: 200px"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ opts.projects } class="{ active: active }">
+      <td>-</td>
+      <td>{ name }</td>
+      <td></td>
+      <td></td>
+      <td style="text-align: center">
+        <a href="#" class="btn btn-success btn-xs">Edit</a>
+        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</admin_event>

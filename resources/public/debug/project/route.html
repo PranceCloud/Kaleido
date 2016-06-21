@@ -1,0 +1,291 @@
+<project_route>
+  <legend></legend>
+
+  <div class="row" show="{ is_response }">
+    <div class="col-md-10 col-md-offset-1 well">
+      <h5>{ this.method } - { this.url }</h5>
+      <div><code class="json" id="response_code">{ JSON.stringify(this.response) }</code></div>
+    </div>
+  </div>
+
+  <div class="row" show="{ is_form }">
+    <fieldset class="well col-md-10 col-lg-offset-1">
+      <h5>Add { this._form.name }</h5>
+      <form class="form-horizontal" id="{ this._form.name }_form" onsubmit="return false;"
+            enctype="multipart/form-data">
+        <div each="{ this._form.fields }" class="form-group form-group-sm">
+          <label for="input_{ name }" class="col-sm-2 control-label">{ name }</label>
+          <div class="col-sm-9">
+            <input if={ _.contains(["string","text","int","float","time"],type) } type="text" class="form-control"
+            name="{ name }" value="{ attrs.default }" id="input_{ name }" placeholder="{ attrs.limit }">
+
+            <span if={ type== "image" }>
+            <input type="file" multiple class="form-control" name="{ name }" id="upload_image_{ name }">
+            <input type="hidden" name="{ name }">
+            </span>
+
+            <span if={ type== "file" }>
+            <input type="file" multiple class="form-control" name="{ name }" id="upload_file_{ name }">
+            <input type="hidden" name="{ name }">
+            </span>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-9">
+            <button type="button" class="btn btn-primary btn-xs" onclick="{ add_record_form }">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+  </div>
+
+  <span class="label label-default">Model</span>
+  <table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+      <th style="width:16%">Name</th>
+      <th>List</th>
+      <th>Search</th>
+      <th>Insert</th>
+      <th>Show</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ this.models_path_list }>
+      <td>{ name }</td>
+      <td>{ list_action.method } - { list_action.path }
+        <a onclick="{ list }" class="btn-sm" style="cursor: pointer">link</a>
+      </td>
+      <td>{ search_action.method } - { search_action.path }
+        <a onclick="{ search }" class="btn-sm" style="cursor: pointer">link</a>
+      </td>
+      <th><a onclick="{ add_record }" class="btn-sm" style="cursor: pointer;">add</a></th>
+      <td>By list</td>
+      <td>By list</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <script>
+    //    var formData = new FormData();
+    //    formData.append('file', $('#file')[0].files[0]);
+    //
+    //    $.ajax({
+    //      url : 'upload.php',
+    //      type : 'POST',
+    //      data : formData,
+    //      processData: false,  // tell jQuery not to process the data
+    //      contentType: false,  // tell jQuery not to set contentType
+    //      success : function(data) {
+    //        console.log(data);
+    //        alert(data);
+    //      }
+    //    });
+    //    https://github.com/component/upload/blob/master/index.js
+
+    var self = this
+
+    self.is_response = false
+    self.is_form = false
+
+    self.models_path_list = []
+    self.response = "..."
+    self.method = ""
+    self.url = ""
+    self.response = ""
+
+    self._form = {}
+
+    //    UploadFile(f)
+    //    {
+    //      var upload_url = kaleido_admin.base_url + kaleido_admin.project_prefix_url + "/" + kaleido_admin.project_name + "/upload"
+    //
+    //      $.getJSON('/csrf')
+    //          .done(
+    //              function (data) {
+    //                if (typeof data == "object") {
+    //                  var csrf = $('')
+    //                  $(this._form.name + '_form').submit()
+    //                  $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    //                    jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+    //                  });
+    //                  $(f).pekeUpload({
+    //                    url: upload_url,
+    //                    data: {"__anti-forgery-token": data.csrf},
+    //                    onSubmit: true
+    //                  });
+    //                  var formData = new FormData();
+    //                  formData.append('file', $(f));
+    //                  formData.append('string', $("<input name='fe' value='fefe'>"));
+    //                  console.log(f.name)
+    //                  $.ajax({
+    //                    url: upload_url,
+    //                    type: 'POST',
+    //                    data: formData,
+    //                    processData: false,  // tell jQuery not to process the data
+    //                    contentType: false,  // tell jQuery not to set contentType
+    //                    success: function (data) {
+    //                      console.log(data);
+    //                    }
+    //                  });
+    //                }
+    //              });
+    //
+    //    }
+
+    //    upload(e)
+    //    {
+    ////      console.log(e.item)
+    ////      console.log(e.target.id, e.target.name)
+    ////      this.UploadFile(e.target)
+    //    }
+
+    add_record(e)
+    {
+      self._form = _.find(kaleido_admin.models, function (m) {
+        return m.name == e.item.name
+      })
+//      console.log(self.form_fields)
+      self.is_form = true
+      self.is_response = false
+      self.update()
+      var upload_url = kaleido_admin.base_url + kaleido_admin.project_prefix_url + "/" + kaleido_admin.project_name + "/upload"
+
+      var callback = function (data) {
+        if (typeof data == "object") {
+          _.each($('#' + self._form.name + "_form input[type=file]"), function (e) {
+            $(e).pekeUpload({
+              url: upload_url,
+              data: {
+                "__anti-forgery-token": data.csrf,
+                field: e.name,
+                model: self._form.name
+              },
+//              showPreview: false,
+//              showFilename: false,
+//              showPercent: false,
+              onFileSuccess: function (f, data) {
+                console.log(f, data)
+              }
+            })
+          })
+        }
+      }
+      $.getJSON('/csrf').done(function (data) {
+        callback(data)
+      });
+
+    }
+
+    add_record_form()
+    {
+      var post_data = getFormData($("#" + this._form.name + "_form"))
+
+      var create_url = kaleido_admin.base_url + kaleido_admin.project_prefix_url +
+          "/" + kaleido_admin.project_name +
+          "/model/" + "create" + "/" + self._form.name;
+
+      $.getJSON('/csrf')
+          .done(
+              function (data) {
+                if (typeof data == "object") {
+                  $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                    jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+                  });
+                  console.log(create_url)
+                  console.log(post_data)
+                  $.ajax({
+                    method: 'POST',
+                    url: create_url,
+                    data: JSON.stringify(post_data),
+                    contentType: 'application/json',
+                    success: function (j) {
+                      console.log(j)
+                    }
+                  });
+                }
+              });
+    }
+
+    test_remote(method, url, data)
+    {
+      $.ajax({
+        url: url,
+        method: method,
+        data: data,
+        dataType: "json"
+      }).done(function (msg) {
+        self.method = method
+        self.url = url
+        self.response = msg
+      }).fail(function (jqXHR, textStatus) {
+        self.method = method
+        self.url = url
+        self.response = textStatus
+        $('div code').html(textStatus)
+//        console.log($('div code').html())
+//        $('div code').each(function (i, block) {
+//          hljs.highlightBlock(block);
+//        });
+      }).always(function () {
+        self.is_response = true
+        console.log(JSON.stringify(self.response, null, " "))
+        self.update()
+        $('div code').html(JSON.stringify(self.response, null, "&nbsp;"))
+        $('div code').html($('div code').html().replace(/\n/g, '<br/>'));
+        $('div code').each(function (i, block) {
+          hljs.configure({useBR: true})
+          hljs.highlightBlock(block);
+        });
+      });
+    }
+
+    list(e)
+    {
+//      self.response = e.item.list_action.method + "-" + e.item.list_action.path;
+      this.test_remote(e.item.list_action.method, e.item.list_action.path, {})
+      console.log(e.item)
+    }
+
+    search(e)
+    {
+      this.test_remote(e.item.list_action.method, e.item.search_action.path, {})
+    }
+
+    self.on('update', function () {
+
+    });
+
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login');
+        return;
+      }
+      kaleido_admin.project_load()
+    })
+
+    opts.on('project_load', function () {
+      $.getScript('debug/uploadfile.min.js');
+      console.log("project_load in route!")
+      self.models_path_list = _.map(opts.models, function (m) {
+        var n = {name: m.name}
+        n.list_action = {
+          method: 'get',
+          path: kaleido_admin.base_url + kaleido_admin.project_prefix_url + "/" + kaleido_admin.project_name +
+          "/model/show/" + m.name
+        };
+        n.search_action = {
+          method: 'get',
+          path: kaleido_admin.base_url + kaleido_admin.project_prefix_url + "/" + kaleido_admin.project_name +
+          "/model/search/" + m.name
+        };
+        return n
+      });
+      self.update()
+    })
+  </script>
+</project_route>

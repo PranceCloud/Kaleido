@@ -1,0 +1,104 @@
+<project_model>
+  <legend></legend>
+
+  <div class="col-lg-12" id="model_form" show="{ open_form: open_form }"></div>
+
+  <div class="btn-group">
+    <a onclick="{ create }" class="btn btn-info btn-xs">Create Table</a>
+    <a class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a onclick="{ create }" style="cursor: pointer">Normal</a></li>
+      <li><a onclick="{ create }" id="tree" style="cursor: pointer">Tree</a></li>
+      <li><a onclick="{ create }" id="attribute" style="cursor: pointer">Attribute</a></li>
+    </ul>
+  </div>
+  <div class="btn-group">
+    <a onclick="{ load }" class="btn btn-info btn-xs">Refresh Table</a>
+  </div>
+
+
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Fields</th>
+      <th style="width: 200px"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ models }>
+      <td>-</td>
+      <td>{ name || "!?" }</td>
+      <td>{ defined || "!?" }</td>
+      <td>{ fields.length }</td>
+      <td style="text-align: center">
+        <a onclick="{ edit }" class="btn btn-success btn-xs">Edit</a>
+        <a onclick="{ remove }" class="btn btn-danger btn-xs">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <script>
+    var self = this
+    //    self.models = []
+    self.model = {}
+    self.open_form = false
+
+    remove(e)
+    {
+      kaleido_admin.model_delete(e.item)
+    }
+
+    edit(e)
+    {
+      console.log(e)
+      self.model = {action: 'update', defined: e.item.defined, data: e.item}
+      self.form()
+    }
+
+    create(e)
+    {
+      var defined = (e.currentTarget.id == "") ? "normal" : e.currentTarget.id
+      var pre_model = {defined: defined, name: _.random(1000, 10000), fields: []}
+      kaleido_admin.model_create(pre_model)
+//      console.log(id)
+//      self.model = {action: 'create', defined: id, data: {name: _.random(1000, 10000), fields: []}}
+//      self.form()
+    }
+
+    form(d)
+    {
+      console.log(self.model)
+      self.open_form = true
+      riot.mount(document.getElementById('model_form'), 'model_form', {model: self.model})
+//      riot.mount(document.getElementById('model_form'), 'model_form', kaleido_admin)
+    }
+
+    load()
+    {
+      self.open_form = false
+      opts.model_load()
+    }
+
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login');
+        return;
+      }
+      self.load()
+    })
+
+    opts.on('model_load', function () {
+      self.models = kaleido_admin.models
+      self.update()
+    })
+
+    opts.on('model_update', function () {
+      self.models = kaleido_admin.models
+      self.update()
+    })
+  </script>
+</project_model>

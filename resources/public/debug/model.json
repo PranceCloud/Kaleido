@@ -1,0 +1,84 @@
+{
+  "data": [
+    {
+      "name": "blog",
+      "defined": "normal",
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "attrs": {
+            "limit": 200
+          }
+        },
+        {
+          "name": "content",
+          "type": "text"
+        },
+        {
+          "name": "category",
+          "type": "join",
+          "join": [
+            {
+              "name": "category",
+              "field": "name",
+              "type": "has_one"
+            }
+          ]
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "attrs": {
+            "limit": 30
+          }
+        },
+        {
+          "name": "ownid",
+          "type": "aid"
+        },
+        {
+          "name": "readnum",
+          "type": "int",
+          "fn": "inc self.readnum"
+        },
+        {
+          "name": "updated",
+          "type": "time",
+          "attrs": {
+            "fn": "t/now"
+          }
+        }
+      ]
+    },
+    {
+      "name": "category",
+      "defined": "tree",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "attrs": {
+            "limit": 100
+          }
+        },
+        {
+          "name": "blog",
+          "type": "join",
+          "join": [
+            {
+              "name": "blog",
+              "field": "category",
+              "type": "has_many"
+            },
+            {
+              "name": "auth",
+              "field": "account",
+              "type": "has_one"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

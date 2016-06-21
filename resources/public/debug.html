@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bootswatch: Lumen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!--<link rel="stylesheet" href="united.bootstrap.min.css" media="screen">-->
+  <!--<link rel="stylesheet" href="//fonts.css.network/css?family=Ubuntu:400,700" media="screen">-->
+  <link rel="stylesheet" href="//cdn.css.net/libs/bootswatch/3.3.6/journal/bootstrap.min.css" media="screen">
+  <!--<link rel="stylesheet" href="/static/css/journal-bootstrap.min.css" media="screen">-->
+  <link rel="stylesheet" href="//cdn.css.net/libs/highlight.js/9.4.0/styles/github.min.css">
+
+  <!--<link rel="stylesheet" href="//cdn.css.net/libs/highlight.js/9.4.0/styles/github.min.css">-->
+
+  <!--<link rel="stylesheet" href="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.css" media="screen">-->
+
+  <script src="//cdn.css.net/libs/riot/2.4.1/riot+compiler.js"></script>
+  <style>
+    @import url("http://fonts.css.network/css?family=News+Cycle:400,700");
+
+    body {
+      padding-top: 50px;
+      font-size: 14px;
+      font-family: "Source Sans Pro", "Microsoft YaHei UI";
+    }
+
+    body {
+      padding-top: 50px
+    }
+
+    body > .navbar {
+      -webkit-transition: background-color .3s ease-in;
+      transition: background-color .3s ease-in
+    }
+
+    @media (min-width: 768px) {
+      body > .navbar-transparent {
+        background-color: transparent
+      }
+
+      body > .navbar-transparent .navbar-nav > .open > a {
+        background-color: transparent !important
+      }
+    }
+
+    #home {
+      padding-top: 0
+    }
+
+    #home .navbar-brand {
+      padding: 13.5px 15px 12.5px
+    }
+
+    #home .navbar-brand > img {
+      display: inline;
+      margin: 0 10px;
+      height: 100%
+    }
+
+    #banner {
+      min-height: 300px;
+      border-bottom: none
+    }
+
+    .table-of-contents {
+      margin-top: 1em
+    }
+
+    .bs-component {
+      position: relative
+    }
+
+    .bs-component .modal {
+      position: relative;
+      top: auto;
+      right: auto;
+      left: auto;
+      bottom: auto;
+      z-index: 1;
+      display: block
+    }
+
+    .bs-component .modal-dialog {
+      width: 90%
+    }
+
+    .bs-component .popover {
+      position: relative;
+      display: inline-block;
+      width: 220px;
+      margin: 20px
+    }
+
+    #source-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 100;
+      font-weight: 700
+    }
+
+    .nav-tabs {
+      margin-bottom: 15px
+    }
+
+    .progress {
+      margin-bottom: 10px
+    }
+
+    footer {
+      margin: 5em 0;
+    }
+
+    footer li {
+      float: left;
+      margin-right: 1.5em;
+      margin-bottom: 1.5em
+    }
+
+    footer p {
+      clear: left;
+      margin-bottom: 0
+    }
+
+    .splash {
+      padding: 9em 0 2em;
+      background-color: #141d27;
+      background-image: url(../img/bg.jpg);
+      background-size: cover;
+      background-attachment: fixed;
+      color: #fff;
+      text-align: center
+    }
+
+    .splash .logo {
+      width: 160px
+    }
+
+    .splash h1 {
+      font-size: 3em
+    }
+
+    .splash #social {
+      margin: 2em 0
+    }
+
+    .splash .alert {
+      margin: 2em 0
+    }
+
+    .section-tout {
+      padding: 4em 0 3em;
+      border-bottom: 1px solid rgba(0, 0, 0, .05);
+      background-color: #eaf1f1
+    }
+
+    .section-tout .fa {
+      margin-right: .5em
+    }
+
+    .section-tout p {
+      margin-bottom: 3em
+    }
+
+    .section-preview {
+      padding: 4em 0 4em
+    }
+
+    .section-preview .preview {
+      margin-bottom: 4em;
+      background-color: #eaf1f1
+    }
+
+    .section-preview .preview .image {
+      position: relative
+    }
+
+    .section-preview .preview .image:before {
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      content: "";
+      pointer-events: none
+    }
+
+    .section-preview .preview .options {
+      padding: 1em 2em 2em;
+      border: 1px solid rgba(0, 0, 0, .05);
+      border-top: none;
+      text-align: center
+    }
+
+    .section-preview .preview .options p {
+      margin-bottom: 2em
+    }
+
+    .section-preview .dropdown-menu {
+      text-align: left
+    }
+
+    .section-preview .lead {
+      margin-bottom: 2em
+    }
+
+    @media (max-width: 767px) {
+      .section-preview .image img {
+        width: 100%
+      }
+    }
+
+    .sponsor #carbonads {
+      max-width: 240px;
+      margin: 0 auto
+    }
+
+    .sponsor .carbon-text {
+      display: block;
+      margin-top: 1em;
+      font-size: 12px
+    }
+
+    .sponsor .carbon-poweredby {
+      float: right;
+      margin-top: 1em;
+      font-size: 10px
+    }
+
+    @media (max-width: 767px) {
+      .splash {
+        padding-top: 4em
+      }
+
+      .splash .logo {
+        width: 100px
+      }
+
+      .splash h1 {
+        font-size: 2em
+      }
+
+      #banner {
+        margin-bottom: 2em;
+        text-align: center
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand" style="font-size: 98%;font-weight: bold;">Kaleido 万花筒</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-main">
+      <nav_in_menu></nav_in_menu>
+      <nav_in_user></nav_in_user>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+
+  <div id="main">
+
+  </div>
+  <div id="second-main"></div>
+
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+        <ul class="list-unstyled">
+          <li class="pull-right"><a href="#top">Back to top</a></li>
+          <li><a href="https://github.com/PranceCloud/Kaleido">Kaleido on GitHub</a></li>
+          <li><a href="#api">API</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+        <p></p>
+        <p>Code released under the Apache.</p>
+      </div>
+    </div>
+
+  </footer>
+
+
+</div>
+
+<script src="//cdn.css.net/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.css.net/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--<script src="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.js"></script>-->
+<script src="//cdn.css.net/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="static/js/md5.min.js"></script>
+<!--<script src="static/js/kaleido.js"></script>-->
+
+<!--<script type="riot/tag" src="debug/nav_in_menu.html"></script>-->
+<!--<script type="riot/tag" src="debug/nav_in_user.html"></script>-->
+
+<!--<script type="riot/tag" src="debug/start.html"></script>-->
+<!--<script type="riot/tag" src="debug/login.html"></script>-->
+
+<!--<script type="riot/tag" src="debug/admin.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/info.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/setting.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/project.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/account.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/event.html"></script>-->
+<!--<script type="riot/tag" src="debug/admin/proxy.html"></script>-->
+
+<!--<script type="riot/tag" src="debug/project.html"></script>-->
+<!--<script type="riot/tag" src="debug/project/setting.html"></script>-->
+<!--<script type="riot/tag" src="debug/project/account.html"></script>-->
+<!--<script type="riot/tag" src="debug/project/route.html"></script>-->
+<!--<script type="riot/tag" src="debug/project/model_form.html"></script>-->
+<!--<script type="riot/tag" src="debug/project/model.html"></script>-->
+
+<!--<script type="riot/tag" src="debug/help.html"></script>-->
+
+<script src="static/kadmin.js"></script>
+<script src="debug/kaleido_admin.js"></script>
+
+<!--<script src="debug/jslib/highlight-js/highlight.pack.js"></script>-->
+<script src="//cdn.css.net/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script src="//cdn.css.net/libs/highlight.js/9.4.0/languages/json.min.js"></script>
+<!--<script src="//cdn.css.net/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>-->
+
+
+</body>
+</html>

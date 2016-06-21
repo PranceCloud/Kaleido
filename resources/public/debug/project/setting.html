@@ -1,0 +1,63 @@
+<project_setting>
+  <legend></legend>
+  <form class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label for="project_name" class="col-lg-2 control-label">Name</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control"
+                 value="{ opts.project_name }"
+                 name="project_name" id="project_name" placeholder="project">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="project_path" class="col-lg-2 control-label">Url Path</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control"
+                 value="{ opts.project_path }"
+                 name="project_path" id="project_path" placeholder="path/">
+          <span class="help-block">
+            Real Path is [Web Server Base Path]/[Kaleido Project Path]/[Your Project Path]
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="project_allow_manage_ip" class="col-lg-2 control-label">Allow Manage IP</label>
+        <div class="col-lg-9">
+          <textarea class="form-control" rows="3"
+                    name="project_allow_manage_ip" id="project_allow_manage_ip"
+                    placeholder="*">{ opts.project_allow_manage_ip }</textarea>
+        </div>
+      </div>
+
+      <span class="help-block col-lg-offset-2">
+        More settings, please use [kaleido.edu].
+      </span>
+
+      <div class="form-group">
+        <div class="col-lg-9 col-lg-offset-2">
+          <button onclick="{ save }" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <script>
+    var self = this
+    save()
+    {
+      var project = {
+        name: self.project_name.value,
+        path: self.project_path.value,
+        allowIP: self.project_allow_manage_ip.value
+      }
+      kaleido_admin.project_update(project)
+    }
+
+    self.on('project_update', function () {
+      self.update()
+    });
+  </script>
+</project_setting>

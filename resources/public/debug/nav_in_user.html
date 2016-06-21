@@ -1,0 +1,17 @@
+<nav_in_user>
+  <ul class="nav navbar-nav navbar-right">
+    <li hide={ opts.is_login }><a href="#login">Login</a></li>
+    <li show={ opts.is_login }><a href="#user/profile">{ opts.username } [{ opts.userrole }] ({ opts.project_name })</a></li>
+    <li show={ opts.is_login }><a href="#logout">logout</a></li>
+  </ul>
+
+  <script>
+    var self = this;
+
+    opts.on('login', function (json) {
+      if (json.status == true) {
+      }
+      self.update();
+    })
+  </script>
+</nav_in_user>

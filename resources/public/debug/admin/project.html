@@ -1,0 +1,46 @@
+<admin_project>
+  <legend></legend>
+  <div>
+    <a href="#" class="btn btn-info btn-xs">Create</a>
+  </div>
+  <table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Model Num</th>
+      <th>Event Num</th>
+      <th>Account Num</th>
+      <th style="width: 200px"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr each={ opts.projects } class="{ active: active }">
+      <td>-</td>
+      <td>{ name }</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td style="text-align: center">
+        <a href="#" class="btn btn-success btn-xs">Run</a>
+        <a href="#" class="btn btn-warning btn-xs">Stop</a>
+        <a href="#" class="btn btn-danger btn-xs">Destory</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <script>
+    var self = this
+
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login');
+        return;
+      }
+      console.log(opts.projects)
+    })
+  </script>
+</admin_project>

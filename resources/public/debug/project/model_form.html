@@ -1,0 +1,294 @@
+<model_form>
+  <h4>{ opts.model.action } Model - { opts.model.data.name }</h4>
+  <fieldset class="well">
+    <form class="form-horizontal" onsubmit="return false;">
+
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <span class="label label-info">Table</span>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label for="inputModelName" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-5">
+          <input type="hidden" name="table_key" id="table_key" value="{ opts.model.data.name }">
+          <input type="text" class="form-control input-sm" name="table_name" id="table_name"
+                 value="{ opts.model.data.name || '' }"
+                 id="inputModelName" placeholder="name">
+        </div>
+      </div>
+
+      <div class="form-group form-group-sm">
+        <label for="table_defined" class="col-sm-2 control-label">Defined</label>
+        <div class="col-sm-5">
+          <select class="form-control input-sm" id="table_defined" name="table_defined" value="{ opts.model.defined }">
+            <option value="normal">Normal</option>
+            <option value="tree">Tree</option>
+            <option value="attribute">Attribute</option>
+          </select>
+        </div>
+      </div>
+
+    </form>
+
+    <fieldset class="well col-lg-offset-1">
+      <div class="form-group">
+        <span class="label label-info">Fields list</span>
+
+        <table class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Attrs</th>
+            <th>Join</th>
+            <th style="width: 200px"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr each={ opts.model.data.fields }>
+            <td>{ name }</td>
+            <td>{ type }</td>
+            <td>{ _.size(attrs) || "-" }</td>
+            <td>{ _.size(join) ? "Y":"-" }</td>
+            <td style="text-align: center">
+              <a onclick="{ edit_field }" class="btn btn-success btn-xs">Edit</a>
+              <a onclick="{ delete_field }" class="btn btn-danger btn-xs">Delete</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-9">
+          <button type="button" class="btn btn-success btn-xs" onclick="{ new_field }">New Field</button>
+          <button type="button" class="btn btn-primary btn-xs" onclick="{ save }">Save Table</button>
+          <!--<button type="button" class="btn btn-primary btn-xs">Save Fields</button>-->
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="well col-lg-offset-1" show="{ open_field_form: open_field_form }">
+
+      { JSON.stringify(select_field) }
+      <form class="form-horizontal" onsubmit="return false;" id="field_join">
+        <span class="label label-info">Fields Info</span>
+        <div class="form-group form-group-sm">
+          <label for="field_name" class="col-sm-2 control-label">Field Name</label>
+          <div class="col-sm-5">
+            <input type="hidden" name="field_key" value="{ select_field.name || '' }">
+            <input type="text" class="form-control input-sm"
+                   name="field_name" value="{ select_field.name || '' }"
+                   id="field_name" placeholder="name">
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label for="field_type" class="col-sm-2 control-label">Type</label>
+          <div class="col-sm-2">
+            <select class="form-control" id="field_type"
+                    name="field_type" value="{ select_field.type || ''}"
+                    onchange="{ field_type_change }">
+              <option value="string">String</option>
+              <option value="text">Text</option>
+              <option value="int">Int</option>
+              <option value="float">Float</option>
+              <option value="image">Image</option>
+              <option value="file">File</option>
+              <option value="time">Time</option>
+              <option value="date">Date</option>
+              <option value="aid">OwnId</option>
+              <option value="join">Join</option>
+            </select>
+          </div>
+          <label for="field_attrs" class="col-sm-1 control-label">Attrs</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control"
+                   name="field_attrs" value="{ select_field.attrs_json || '' }"
+                   id="field_attrs" placeholder="\{\}">
+          </div>
+        </div>
+
+
+        <div class="form-group form-group-sm" show="{ self.field_type.value == 'join' }">
+          <label class="col-sm-2 control-label">Join</label>
+          <div class="col-sm-9">
+            <button type="button" class="btn btn-success btn-xs" onclick="{ add_new_join_field }">
+              +
+            </button>
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th>Name</th>
+                <th>Join Type</th>
+                <th>Join Field</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr each={ select_field.join }>
+                <td>
+                  <input type="text" class="form-control input-sm"
+                         name="join_{ md5(name) }_name" value="{ name }" placeholder="name">
+                </td>
+                <td>
+                  <select class="form-control" id="inputJoinType"
+                          name="join_{ md5(name) }_type" value="{ type }">
+                    <option value="has_one">Has_one</option>
+                    <option value="has_many">Has_many</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="form-control input-sm"
+                         name="join_{ md5(name) }_field" value="{ field }" placeholder="table.field">
+                </td>
+                <td style="text-align: center">
+                  <a onclick="{ remove_join_field }" class="btn btn-danger btn-xs">Remove</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <div class="col-lg-9">
+            <button type="button" class="btn btn-primary btn-xs" onclick="{ save_field }">
+              Change Field
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </fieldset>
+  </fieldset>
+
+
+  <script>
+    var self = this
+    self.select_field = []
+    self.open_field_form = false
+
+    save(e)
+    {
+      var update_table = {
+        key: self.table_key.value,
+        name: self.table_name.value,
+        defined: self.table_defined.value
+      };
+      kaleido_admin.model_update(update_table)
+//      console.log(this)
+    }
+
+    add_new_join_field(e)
+    {
+      random_key = _.random(1000, 10000);
+      new_join_field = {name: random_key, type: "has_one", field: ""}
+      if (typeof self.select_field.join == 'undefined') {
+        self.select_field.join = []
+      }
+      self.select_field.join.push(new_join_field)
+      self.update()
+    }
+
+    remove_join_field(e)
+    {
+      console.log(e)
+      self.select_field.join = _.filter(self.select_field.join, function (d) {
+        return e.item.name != d.name
+      })
+      self.update()
+    }
+
+    new_field(e)
+    {
+//      self.select_field = {}
+//      self.open_field_form = true
+      var n = kaleido_admin.field_insert(opts.model.data.name)
+      self.edit_field({item: n})
+    }
+
+    edit_field(e)
+    {
+      self.select_field = {}
+      self.update()
+      self.select_field = e.item
+      self.select_field.attrs_json = JSON.stringify(self.select_field.attrs)
+      self.open_field_form = true
+      self.update()
+    }
+
+    delete_field(e)
+    {
+      console.log(e.item)
+      kaleido_admin.field_delete(opts.model.data.name, e.item)
+      self.update()
+    }
+
+    save_field(e)
+    {
+//      console.log($('#field_join').serializeArray())
+      var field_values = {}
+      field_values.join = []
+      field_values.key = this.field_key.value
+      field_values.name = this.field_name.value
+      field_values.type = this.field_type.value
+      try {
+        field_values.attrs = (this.field_attrs.value == '') ? '{}' : this.field_attrs.value
+        field_values.attrs = JSON.parse(field_values.attrs)
+      } catch (e) {
+        field_values.attrs = {error: this.field_attrs.value}
+      }
+      if (field_values.type == 'join') {
+        var f_join = {}
+        _.map($('#field_join').serializeArray(), function (d) {
+          var jf = d.name.split('_')
+          if (_.size(jf) == 3) {
+            f_join[jf[1]] = (typeof f_join[jf[1]] == 'undefined') ? {} : f_join[jf[1]]
+            f_join[jf[1]][jf[2]] = d.value
+          }
+        });
+        _.map(f_join, function (d) {
+          field_values.join.push(d)
+        })
+      } else {
+//        self.select_field.join = []
+        delete field_values.join
+      }
+      self.select_field = field_values
+      self.select_field.attrs_json = JSON.stringify(self.select_field.attrs)
+//      console.log('self.select_field', self.select_field)
+//      console.log('model_form opts', opts)
+//      self.model_update(self.select_field)
+      kaleido_admin.field_update(opts.model.data.name, self.select_field)
+      self.update()
+    }
+
+    //    var parent = this.parent
+    //    console.log("parent ", parent)
+
+    field_type_change(e)
+    {
+//      console.log(e.target.value);
+//      self.select_field.type = e.target.value
+//      self.update()
+//      console.log(self.inputFieldType.value)
+    }
+
+    self.model = {}
+
+    self.on('update',function() {
+      self.model = kaleido_admin.models
+    })
+
+    self.on('mount', function () {
+//      console.log("model +> ", kaleido_admin)
+      self.model = kaleido_admin.models
+//      self.models = kaleido_admin.models
+//      console.log("parent +> ", this.parent)
+//      console.log("model +> ", self.model)
+//      console.log("model.data.fields +> ", model.data.fields)
+    })
+
+  </script>
+</model_form>

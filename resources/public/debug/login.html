@@ -1,0 +1,84 @@
+<login>
+  <div class="row page-header">
+    <div class="col-lg-6">
+      <div class="well bs-component">
+        <form class="form-horizontal" method="post">
+          <fieldset>
+            <legend>Auth</legend>
+            <div class="form-group">
+              <label for="project_name" class="col-lg-2 control-label">Project</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" value="{ opts.project_name }" id="project_name"
+                       name="project_name"
+                       placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group { login_name_has_error }">
+              <label for="login_name" class="col-lg-2 control-label">Name</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" id="login_name" name="login_name" placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group { login_password_has_error }">
+              <label for="login_password" class="col-lg-2 control-label">Password</label>
+              <div class="col-lg-10">
+                <input type="password" class="form-control" id="login_password" name="login_password"
+                       placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="{ login }">Submit</button>
+              </div>
+            </div>
+            <div class="form-group" show={ message.length> 0 }>
+              <div class="col-lg-10 col-lg-offset-2">
+                <div class="alert alert-dismissible alert-warning">{ message }</div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row page-header">
+    <div class="col-lg-4 col-lg-offset-1">
+      FE { message }
+    </div>
+  </div>
+
+  <script>
+    var self = this;
+    self.message = "";
+    self.login_name_has_error = "";
+    self.login_password_has_error = "";
+
+    login()
+    {
+      if ($("#project_name").val().length == 0) {
+        self.login_name_has_error = "has-error"
+        self.update()
+      } else if ($("#login_name").val().length == 0) {
+        self.login_name_has_error = "has-error"
+        self.update()
+      } else if ($("#login_password").val().length == 0) {
+        self.login_name_has_error = ""
+        self.login_password_has_error = "has-error"
+        self.update()
+      } else {
+        opts.login($("#project_name").val(), {
+          login_name: self.login_name.value,
+          login_password: self.login_password.value
+        })
+      }
+    }
+
+    opts.on('login', function (json) {
+      self.message = json.message;
+      self.update();
+      console.log(this.message);
+    })
+
+  </script>
+</login>

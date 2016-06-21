@@ -1,0 +1,21 @@
+<nav_in_menu>
+  <ul class="nav navbar-nav">
+    <li show={ opts.is_login && opts.is_admin }>
+      <a href="#admin"><i class="glyphicon glyphicon-fire"></i> Admin</a>
+    </li>
+    <li class="dropdown" show={ opts.is_login && (!opts.is_admin) }>
+      <a href="#project/{ opts.project_name }">
+        <i class="glyphicon glyphicon-inbox"></i> Project - { opts.project_name }</a>
+    </li>
+    <li>
+      <a href="#help"><i class="glyphicon glyphicon-road"></i> Help</a>
+    </li>
+    <li>
+      <a href="http://www.91here.com/kaleido" target="_blank"><i class="glyphicon glyphicon-link"></i> Blog</a>
+    </li>
+  </ul>
+
+  <script>
+
+  </script>
+</nav_in_menu>
