@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,4 +86,93 @@
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TEST REMOTE</title>
+  <script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"></script>
+
+</head>
+<body>
+<div id="remote_get_test"></div>
+
+<input type="button" onclick="test_remote()" value="TEST REMOTE"/>
+<input type="button" onclick="test_project_create()" value="TEST PROJECT CREATE"/>
+<script type="text/javascript">
+  var d;
+  function test_project_create() {
+    $.ajax({
+      type: 'POST',
+      url: '/project/create',
+      dataType: 'json',
+      data: {
+        "command": "link",
+        "links": {
+          "abouts": {
+            "method": "get",
+            "url": "/abouts",
+            "data": {
+              "22": "ss",
+              "ss": "ss"
+            }
+          },
+          "abouts_get_on": {
+            "method": "get",
+            "url": "/abouts/10"
+          },
+          "get_some_on": {
+            "method": "get",
+            "url": "/user/1"
+          }
+        }
+      },
+      success: function (data) {
+        console.log(data);
+        d = data;
+        $('#remote_get_test').html(data.abouts_get_on.body);
+        console.log(data);
+      }
+    });
+  }
+
+  function test_remote() {
+    $.ajax({
+      type: 'POST',
+      url: '/remote',
+      dataType: 'json',
+      data: {
+        "command": "link",
+        "links": {
+          "project": {
+            "component": "project",
+            "action": "show",
+            "data": {
+              "id": "ss",
+              "ss": "ss"
+            }
+          },
+          "abouts_get_on": {
+            "method": "get",
+            "url": "/abouts/10"
+          },
+          "get_some_on": {
+            "method": "get",
+            "url": "/user/1"
+          }
+        }
+      },
+      success: function (data) {
+        console.log(data);
+        d = data;
+        $('#remote_get_test').html(data.foo);
+        console.log(data);
+      }
+    });
+  }
+</script>
+
+</body>
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <admin>
   <div class="row">
     <div class="col-lg-12">
@@ -128,4 +129,136 @@
 </admin>
 
 <admin_event>event</admin_event>
+=======
+<admin>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-header">
+        <h3 id="forms">Admin</h3>
+      </div>
+    </div>
+
+    <div class="col-lg-12">
+      <ul class="nav nav-pills">
+        <li each={ action_menu } class="{ active: active }" show="{ show }">
+          <a onclick="{ select_menu }" style="cursor: pointer">
+            <i class="glyphicon glyphicon-{ icon }" show="{ icon: icon }"></i>
+            { title }</a>
+        </li>
+        <!--href="#project/{ parent.opts.project_name }/{ action }"-->
+        <!--<li class="{ model_active } small"><a href="#project/blog/model">Model</a></li>-->
+        <!--<li class="{ event_active } small" show={ opts.admin_role_name== opts.userrole }><a href="#project/blog/event">Event</a>-->
+        <!--</li>-->
+      </ul>
+    </div>
+
+    <div class="col-lg-12" id="work_area" style="margin-top: 10px;">
+
+    </div>
+
+  </div>
+
+  <script>
+    var self = this
+    self.action_menu = [
+      {id: 0, action: 'info', title: 'Info', active: true, show: true},
+      {id: 1, action: 'setting', title: 'Setting', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 2, action: 'project', title: 'Project', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 3, action: 'event', title: 'Event', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 4, action: 'proxy', title: 'Proxy', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 5, action: 'account', title: 'Account', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {
+        id: 6,
+        action: 'logger',
+        title: 'Logger',
+        active: false,
+        show: (opts.admin_role_name == opts.userrole),
+        icon: "eye-open"
+      }
+    ];
+
+    select_menu(e)
+    {
+      console.log(e);
+      _.map(self.action_menu, function (v, k) {
+        self.action_menu[k]['active'] = false
+      });
+      self.action_menu[e.item.id]['active'] = true;
+      riot.mount(document.getElementById('work_area'), 'admin_' + e.item.action, opts);
+      switch (e.item.action) {
+        case 'info':
+          self.action_info();
+          break;
+        case 'project':
+          self.action_project();
+          break;
+        case 'event':
+          self.action_event();
+          break;
+        case 'logger':
+          self.action_logger();
+          break;
+        case 'setting':
+          self.action_setting();
+          break;
+        case 'proxy':
+          self.action_proxy();
+          break;
+        case 'account':
+          self.action_account();
+          break;
+        default:
+          riot.mount(document.getElementById('work_area'), 'Nothing!');
+      }
+    }
+
+    action_info()
+    {
+      self.info = "fFF"
+    }
+
+    action_project()
+    {
+      self.info = "project"
+    }
+
+    action_event()
+    {
+      self.info = "event"
+    }
+
+    action_logger()
+    {
+      self.info = "logger"
+    }
+
+    action_setting()
+    {
+      self.info = "setting"
+    }
+
+    action_proxy()
+    {
+      self.info = "proxy"
+    }
+
+    action_account()
+    {
+      self.info = "account"
+    }
+
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login');
+        return;
+      }
+//      self.action_info()
+      self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}});
+      self.update();
+    });
+  </script>
+</admin>
+
+<admin_event>event</admin_event>
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 <admin_logger>logger</admin_logger>

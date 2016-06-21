@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,4 +137,144 @@
   }
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>TEST REMOTE</title>
+  <script src="static/js/jquery-2.0.3.min.js"></script>
+  <script src="static/js/md5.min.js"></script>
+
+</head>
+<body>
+<form method="post">
+  username: <input type="text" name="login_name" id="login_name"><br/>
+  password: <input type="password" name="login_password" id="login_password"><br/>
+  <input type="button" value="login" onclick="test_member_login()">
+  <input type="button" value="create" onclick="test_member_create()">
+  <input type="button" value="delete" onclick="test_member_delete()">
+
+</form>
+<div id="login_test"></div>
+
+<button onclick="change_user();">Update Rest test password</button>
+<div id="update_test"></div>
+
+<script type="text/javascript">
+  var d;
+  function change_user() {
+    $.getJSON('/csrf',
+        {},
+        function (data) {
+          console.log(data);
+          if (data != '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+              jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+            });
+            $.post('/m/auth/update',
+                {
+                  'login_name': "test",
+                  'login_password': md5("test"),
+                  'csrf': data.csrf
+                },
+                function (data) {
+                  console.log(data);
+                  $('#update_test').html(data.status);
+                });
+          }
+        }
+    );
+  }
+
+  function test_member_delete() {
+    if ($('#login_name').val() == '') {
+      $('#login_test').html("username is empty!");
+      return false;
+    }
+    $.getJSON('/csrf',
+        {},
+        function (data) {
+          console.log(data);
+          if (data != '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+              jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+            });
+            $.ajax({
+              url: '/m/auth/destory',
+              method: 'delete',
+              data: {
+                'login_name': $('#login_name').val(),
+                'csrf': data.csrf
+              }
+            }).done(
+                function (data) {
+                  console.log(data);
+                  $('#login_test').html(data.status);
+                });
+          }
+        }
+    );
+  }
+
+  function test_member_create() {
+    if ($('#login_name').val() == '') {
+      $('#login_test').html("username is empty!");
+      return false;
+    }
+    $.getJSON('/csrf',
+        {},
+        function (data) {
+          console.log(data);
+          if (data != '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+              jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+            });
+            $.post('/m/auth/create',
+                {
+                  'login_name': $('#login_name').val(),
+                  'login_password': md5(md5($('#login_password').val()) + data.csrf),
+                  'csrf': data.csrf
+                },
+                function (data) {
+                  console.log(data);
+                  $('#login_test').html(data.status);
+                });
+          }
+        }
+    );
+  }
+
+  function test_member_login() {
+    if ($('#login_name').val() == '') {
+      $('#login_test').html("username is empty!");
+      return false;
+    }
+    $.getJSON('/csrf',
+        {},
+        function (data) {
+          console.log(data);
+          if (data != '') {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+              jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
+            });
+            $.post('/m/auth/login',
+                {
+                  'login_name': $('#login_name').val(),
+                  'login_password': md5(md5($('#login_password').val()) + data.csrf),
+                  'csrf': data.csrf
+                },
+                function (data) {
+                  console.log(data);
+                  $('#login_test').html(data.status);
+                });
+          }
+        }
+    );
+  }
+</script>
+</body>
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 </html>

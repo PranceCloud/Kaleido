@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <project>
   <div class="row">
     <div class="col-lg-12">
@@ -140,4 +141,148 @@
       self.update();
     })
   </script>
+=======
+<project>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-header">
+        <h3 id="forms">Project { opts.project_name }</h3>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <ul class="nav nav-pills">
+        <li each={ action_menu } class="{ active: active }" show="{ show: show }">
+          <a onclick="{ select_menu }" style="cursor: pointer">
+            <i class="glyphicon glyphicon-{ icon }" show="{ icon: icon }"></i>
+            { title }</a>
+        </li>
+        <!--href="#project/{ parent.opts.project_name }/{ action }"-->
+        <!--<li class="{ model_active } small"><a href="#project/blog/model">Model</a></li>-->
+        <!--<li class="{ event_active } small" show={ opts.admin_role_name== opts.userrole }><a href="#project/blog/event">Event</a>-->
+        <!--</li>-->
+      </ul>
+    </div>
+
+    <div class="col-lg-12" id="work_area" style="margin-top: 10px;">
+
+    </div>
+  </div>
+
+  <script>
+    var self = this
+
+    self.action_menu = [
+      {id: 0, action: 'info', title: 'Info', active: true, show: true},
+      {id: 1, action: 'setting', title: 'Setting', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 2, action: 'model', title: 'Model', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 3, action: 'event', title: 'Event', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 4, action: 'proxy', title: 'Proxy', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 5, action: 'account', title: 'Account', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 6, action: 'logger', title: 'Logger', active: false, show: true, icon: "eye-open"},
+      {
+        id: 7,
+        action: 'route',
+        title: 'Route',
+        active: false,
+        icon: "eye-open",
+        show: (opts.admin_role_name == opts.auth.role)
+      }
+    ];
+
+    select_menu(e)
+    {
+      _.map(self.action_menu, function (v, k) {
+        self.action_menu[k]['active'] = false
+      });
+      self.action_menu[e.item.id]['active'] = true;
+      if (_.contains(["setting", "account", "route", "model"], e.item.action)) {
+        riot.mount(document.getElementById('work_area'), 'project_' + e.item.action, opts);
+      } else
+        riot.mount(document.getElementById('work_area'), 'admin_' + e.item.action, opts);
+      switch (e.item.action) {
+        case 'info':
+          self.action_info();
+          break;
+        case 'event':
+          self.action_event();
+          break;
+        case 'model':
+          self.action_model();
+          break;
+        case 'logger':
+          self.action_logger();
+          break;
+        case 'setting':
+          self.action_setting();
+          break;
+        case 'proxy':
+          self.action_proxy();
+          break;
+        case 'account':
+          self.action_account();
+          break;
+        case 'route':
+          self.action_route();
+          break;
+        default:
+          riot.mount(document.getElementById('work_area'), 'Nothing!');
+      }
+//      self.update();
+    }
+
+    action_info()
+    {
+      self.info = "fFF"
+    }
+
+    action_event()
+    {
+      self.info = "event"
+    }
+
+    action_model()
+    {
+      self.info = "model"
+    }
+
+    action_logger()
+    {
+      self.info = "logger"
+    }
+
+    action_setting()
+    {
+      self.info = "setting"
+    }
+
+    action_proxy()
+    {
+      self.info = "proxy"
+    }
+
+    action_account()
+    {
+      self.info = "account"
+    }
+
+    action_route()
+    {
+      self.info = "route"
+    }
+
+    self.on('update', function () {
+      console.log("update!");
+    });
+
+    self.on('mount', function () {
+      console.log(this.action_menu);
+      if (!opts.is_login) {
+        riot.route('login/' + opts.project_name);
+        return;
+      }
+      self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}})
+      self.update();
+    })
+  </script>
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 </project>

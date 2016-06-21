@@ -1,4 +1,103 @@
-riot.tag2('admin', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Admin</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('admin', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Admin</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div> </admin> <admin_event>event</admin_event> ======= <admin> <div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Admin</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div>', '', '', function(opts) {
+    var self = this
+    self.action_menu = [
+      {id: 0, action: 'info', title: 'Info', active: true, show: true},
+      {id: 1, action: 'setting', title: 'Setting', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 2, action: 'project', title: 'Project', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 3, action: 'event', title: 'Event', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 4, action: 'proxy', title: 'Proxy', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {id: 5, action: 'account', title: 'Account', active: false, show: (opts.admin_role_name == opts.userrole)},
+      {
+        id: 6,
+        action: 'logger',
+        title: 'Logger',
+        active: false,
+        show: (opts.admin_role_name == opts.userrole),
+        icon: "eye-open"
+      }
+    ];
+
+    this.select_menu = function(e)
+    {
+      console.log(e);
+      _.map(self.action_menu, function (v, k) {
+        self.action_menu[k]['active'] = false
+      });
+      self.action_menu[e.item.id]['active'] = true;
+      riot.mount(document.getElementById('work_area'), 'admin_' + e.item.action, opts);
+      switch (e.item.action) {
+        case 'info':
+          self.action_info();
+          break;
+        case 'project':
+          self.action_project();
+          break;
+        case 'event':
+          self.action_event();
+          break;
+        case 'logger':
+          self.action_logger();
+          break;
+        case 'setting':
+          self.action_setting();
+          break;
+        case 'proxy':
+          self.action_proxy();
+          break;
+        case 'account':
+          self.action_account();
+          break;
+        default:
+          riot.mount(document.getElementById('work_area'), 'Nothing!');
+      }
+    }.bind(this)
+
+    this.action_info = function()
+    {
+      self.info = "fFF"
+    }.bind(this)
+
+    this.action_project = function()
+    {
+      self.info = "project"
+    }.bind(this)
+
+    this.action_event = function()
+    {
+      self.info = "event"
+    }.bind(this)
+
+    this.action_logger = function()
+    {
+      self.info = "logger"
+    }.bind(this)
+
+    this.action_setting = function()
+    {
+      self.info = "setting"
+    }.bind(this)
+
+    this.action_proxy = function()
+    {
+      self.info = "proxy"
+    }.bind(this)
+
+    this.action_account = function()
+    {
+      self.info = "account"
+    }.bind(this)
+
+    self.on('mount', function () {
+      if (!opts.is_login) {
+        riot.route('login');
+        return;
+      }
+
+      self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}});
+      self.update();
+    });
+
     var self = this
     self.action_menu = [
       {id: 0, action: 'info', title: 'Info', active: true, show: true},
@@ -100,6 +199,7 @@ riot.tag2('admin', '<div class="row"> <div class="col-lg-12"> <div class="page-h
 
 riot.tag2('admin_event', 'event', '', '', function(opts) {
 });
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 riot.tag2('admin_logger', 'logger', '', '', function(opts) {
 });
 riot.tag2('admin_account', '<legend></legend> <div class="btn-group"> <a href="#" class="btn btn-info btn-xs">Create</a> </div> <table class="table table-striped table-hover "> <thead> <tr> <th>#</th> <th>Name</th> <th>Email</th> <th>Role</th> <th style="width: 200px"></th> </tr> </thead> <tbody> <tr each="{opts.projects}" class="{active: active}"> <td>-</td> <td>{name}</td> <td></td> <td></td> <td style="text-align: center"> <a href="#" class="btn btn-success btn-xs">Edit</a> <a href="#" class="btn btn-danger btn-xs">Delete</a> </td> </tr> </tbody> </table>', '', '', function(opts) {
@@ -136,9 +236,12 @@ riot.tag2('admin_proxy', '<legend></legend> <div class="btn-group"> <a href="#" 
 riot.tag2('admin_setting', '<legend></legend> <form class="form-horizontal"> <fieldset> <div class="form-group"> <label for="inputName" class="col-lg-2 control-label">Project prefix</label> <div class="col-lg-9"> <input type="text" class="form-control" name="name" id="inputName" placeholder="project"> </div> </div> <div class="form-group"> <label for="textArea" class="col-lg-2 control-label">Allow Manage IP</label> <div class="col-lg-9"> <textarea class="form-control" rows="3" id="textArea"></textarea> </div> </div> <span class="help-block col-lg-offset-2"> More settings, please use [kaleido.edu]. </span> <div class="form-group"> <div class="col-lg-9 col-lg-offset-2"> <button type="reset" class="btn btn-default">Cancel</button> <button type="submit" class="btn btn-primary">Save</button> </div> </div> </fieldset> </form>', '', '', function(opts) {
 });
 
-riot.tag2('help', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Help</h3> </div> </div> </div>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('help', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Help</h3> </div> </div> </div> ======= <help> <div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Help</h3> </div> </div> </div>', '', '', function(opts) {
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
-riot.tag2('login', '<div class="row page-header"> <div class="col-lg-6"> <div class="well bs-component"> <form class="form-horizontal" method="post"> <fieldset> <legend>Auth</legend> <div class="form-group"> <label for="project_name" class="col-lg-2 control-label">Project</label> <div class="col-lg-10"> <input type="text" class="form-control" value="{opts.project_name}" id="project_name" name="project_name" placeholder="Name"> </div> </div> <div class="form-group {login_name_has_error}"> <label for="login_name" class="col-lg-2 control-label">Name</label> <div class="col-lg-10"> <input type="text" class="form-control" id="login_name" name="login_name" placeholder="Name"> </div> </div> <div class="form-group {login_password_has_error}"> <label for="login_password" class="col-lg-2 control-label">Password</label> <div class="col-lg-10"> <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password"> </div> </div> <div class="form-group"> <div class="col-lg-10 col-lg-offset-2"> <button type="reset" class="btn btn-default">Cancel</button> <button type="submit" class="btn btn-primary" onclick="{login}">Submit</button> </div> </div> <div class="form-group" show="{message.length> 0}"> <div class="col-lg-10 col-lg-offset-2"> <div class="alert alert-dismissible alert-warning">{message}</div> </div> </div> </fieldset> </form> </div> </div> </div> <div class="row page-header"> <div class="col-lg-4 col-lg-offset-1"> FE {message} </div> </div>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('login', '<div class="row page-header"> <div class="col-lg-6"> <div class="well bs-component"> <form class="form-horizontal" method="post"> <fieldset> <legend>Auth</legend> <div class="form-group"> <label for="project_name" class="col-lg-2 control-label">Project</label> <div class="col-lg-10"> <input type="text" class="form-control" value="{opts.project_name}" id="project_name" name="project_name" placeholder="Name"> </div> </div> <div class="form-group {login_name_has_error}"> <label for="login_name" class="col-lg-2 control-label">Name</label> <div class="col-lg-10"> <input type="text" class="form-control" id="login_name" name="login_name" placeholder="Name"> </div> </div> <div class="form-group {login_password_has_error}"> <label for="login_password" class="col-lg-2 control-label">Password</label> <div class="col-lg-10"> <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password"> </div> </div> <div class="form-group"> <div class="col-lg-10 col-lg-offset-2"> <button type="reset" class="btn btn-default">Cancel</button> <button type="submit" class="btn btn-primary" onclick="{login}">Submit</button> </div> </div> <div class="form-group" show="{message.length> 0}"> <div class="col-lg-10 col-lg-offset-2"> <div class="alert alert-dismissible alert-warning">{message}</div> </div> </div> </fieldset> </form> </div> </div> </div> <div class="row page-header"> <div class="col-lg-4 col-lg-offset-1"> FE {message} </div> </div> ======= <login> <div class="row page-header"> <div class="col-lg-6"> <div class="well bs-component"> <form class="form-horizontal" method="post"> <fieldset> <legend>Auth</legend> <div class="form-group"> <label for="project_name" class="col-lg-2 control-label">Project</label> <div class="col-lg-10"> <input type="text" class="form-control" value="{opts.project_name}" id="project_name" name="project_name" placeholder="Name"> </div> </div> <div class="form-group {login_name_has_error}"> <label for="login_name" class="col-lg-2 control-label">Name</label> <div class="col-lg-10"> <input type="text" class="form-control" id="login_name" name="login_name" placeholder="Name"> </div> </div> <div class="form-group {login_password_has_error}"> <label for="login_password" class="col-lg-2 control-label">Password</label> <div class="col-lg-10"> <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Password"> </div> </div> <div class="form-group"> <div class="col-lg-10 col-lg-offset-2"> <button type="reset" class="btn btn-default">Cancel</button> <button type="submit" class="btn btn-primary" onclick="{login}">Submit</button> </div> </div> <div class="form-group" show="{message.length> 0}"> <div class="col-lg-10 col-lg-offset-2"> <div class="alert alert-dismissible alert-warning">{message}</div> </div> </div> </fieldset> </form> </div> </div> </div> <div class="row page-header"> <div class="col-lg-4 col-lg-offset-1"> FE {message} </div> </div>', '', '', function(opts) {
     var self = this;
     self.message = "";
     self.login_name_has_error = "";
@@ -170,10 +273,47 @@ riot.tag2('login', '<div class="row page-header"> <div class="col-lg-6"> <div cl
       console.log(this.message);
     })
 
+    var self = this;
+    self.message = "";
+    self.login_name_has_error = "";
+    self.login_password_has_error = "";
+
+    this.login = function()
+    {
+      if ($("#project_name").val().length == 0) {
+        self.login_name_has_error = "has-error"
+        self.update()
+      } else if ($("#login_name").val().length == 0) {
+        self.login_name_has_error = "has-error"
+        self.update()
+      } else if ($("#login_password").val().length == 0) {
+        self.login_name_has_error = ""
+        self.login_password_has_error = "has-error"
+        self.update()
+      } else {
+        opts.login($("#project_name").val(), {
+          login_name: self.login_name.value,
+          login_password: self.login_password.value
+        })
+      }
+    }.bind(this)
+
+    opts.on('login', function (json) {
+      self.message = json.message;
+      self.update();
+      console.log(this.message);
+    })
+
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
-riot.tag2('nav_in_menu', '<ul class="nav navbar-nav"> <li show="{opts.is_login && opts.is_admin}"> <a href="#admin"><i class="glyphicon glyphicon-fire"></i> Admin</a> </li> <li class="dropdown" show="{opts.is_login && (!opts.is_admin)}"> <a href="#project/{opts.project_name}"> <i class="glyphicon glyphicon-inbox"></i> Project - {opts.project_name}</a> </li> <li> <a href="#help"><i class="glyphicon glyphicon-road"></i> Help</a> </li> <li> <a href="http://www.91here.com/kaleido" target="_blank"><i class="glyphicon glyphicon-link"></i> Blog</a> </li> </ul>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('nav_in_menu', '<ul class="nav navbar-nav"> <li show="{opts.is_login && opts.is_admin}"> <a href="#admin"><i class="glyphicon glyphicon-fire"></i> Admin</a> </li> <li class="dropdown" show="{opts.is_login && (!opts.is_admin)}"> <a href="#project/{opts.project_name}"> <i class="glyphicon glyphicon-inbox"></i> Project - {opts.project_name}</a> </li> <li> <a href="#help"><i class="glyphicon glyphicon-road"></i> Help</a> </li> <li> <a href="http://www.91here.com/kaleido" target="_blank"><i class="glyphicon glyphicon-link"></i> Blog</a> </li> </ul> ======= <nav_in_menu> <ul class="nav navbar-nav"> <li show="{opts.is_login && opts.is_admin}"> <a href="#admin"><i class="glyphicon glyphicon-fire"></i> Admin</a> </li> <li class="dropdown" show="{opts.is_login && (!opts.is_admin)}"> <a href="#project/{opts.project_name}"> <i class="glyphicon glyphicon-inbox"></i> Project - {opts.project_name}</a> </li> <li> <a href="#help"><i class="glyphicon glyphicon-road"></i> Help</a> </li> <li> <a href="http://www.91here.com/kaleido" target="_blank"><i class="glyphicon glyphicon-link"></i> Blog</a> </li> </ul>', '', '', function(opts) {
+
+
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
-riot.tag2('nav_in_user', '<ul class="nav navbar-nav navbar-right"> <li hide="{opts.is_login}"><a href="#login">Login</a></li> <li show="{opts.is_login}"><a href="#user/profile">{opts.username} [{opts.userrole}] ({opts.project_name})</a></li> <li show="{opts.is_login}"><a href="#logout">logout</a></li> </ul>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('nav_in_user', '<ul class="nav navbar-nav navbar-right"> <li hide="{opts.is_login}"><a href="#login">Login</a></li> <li show="{opts.is_login}"><a href="#user/profile">{opts.username} [{opts.userrole}] ({opts.project_name})</a></li> <li show="{opts.is_login}"><a href="#logout">logout</a></li> </ul> ======= <nav_in_user> <ul class="nav navbar-nav navbar-right"> <li hide="{opts.is_login}"><a href="#login">Login</a></li> <li show="{opts.is_login}"><a href="#user/profile">{opts.username} [{opts.userrole}] ({opts.project_name})</a></li> <li show="{opts.is_login}"><a href="#logout">logout</a></li> </ul>', '', '', function(opts) {
     var self = this;
 
     opts.on('login', function (json) {
@@ -181,8 +321,19 @@ riot.tag2('nav_in_user', '<ul class="nav navbar-nav navbar-right"> <li hide="{op
       }
       self.update();
     })
+
+    var self = this;
+
+    opts.on('login', function (json) {
+      if (json.status == true) {
+      }
+      self.update();
+    })
+
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
-riot.tag2('project', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Project {opts.project_name}</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show: show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('project', '<div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Project {opts.project_name}</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show: show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div> ======= <project> <div class="row"> <div class="col-lg-12"> <div class="page-header"> <h3 id="forms">Project {opts.project_name}</h3> </div> </div> <div class="col-lg-12"> <ul class="nav nav-pills"> <li each="{action_menu}" class="{active: active}" show="{show: show}"> <a onclick="{select_menu}" style="cursor: pointer"> <i class="glyphicon glyphicon-{icon}" show="{icon: icon}"></i> {title}</a> </li> </ul> </div> <div class="col-lg-12" id="work_area" style="margin-top: 10px;"> </div> </div>', '', '', function(opts) {
     var self = this
 
     self.action_menu = [
@@ -297,6 +448,123 @@ riot.tag2('project', '<div class="row"> <div class="col-lg-12"> <div class="page
       self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}})
       self.update();
     })
+
+    var self = this
+
+    self.action_menu = [
+      {id: 0, action: 'info', title: 'Info', active: true, show: true},
+      {id: 1, action: 'setting', title: 'Setting', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 2, action: 'model', title: 'Model', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 3, action: 'event', title: 'Event', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 4, action: 'proxy', title: 'Proxy', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 5, action: 'account', title: 'Account', active: false, show: (opts.admin_role_name == opts.auth.role)},
+      {id: 6, action: 'logger', title: 'Logger', active: false, show: true, icon: "eye-open"},
+      {
+        id: 7,
+        action: 'route',
+        title: 'Route',
+        active: false,
+        icon: "eye-open",
+        show: (opts.admin_role_name == opts.auth.role)
+      }
+    ];
+
+    this.select_menu = function(e)
+    {
+      _.map(self.action_menu, function (v, k) {
+        self.action_menu[k]['active'] = false
+      });
+      self.action_menu[e.item.id]['active'] = true;
+      if (_.contains(["setting", "account", "route", "model"], e.item.action)) {
+        riot.mount(document.getElementById('work_area'), 'project_' + e.item.action, opts);
+      } else
+        riot.mount(document.getElementById('work_area'), 'admin_' + e.item.action, opts);
+      switch (e.item.action) {
+        case 'info':
+          self.action_info();
+          break;
+        case 'event':
+          self.action_event();
+          break;
+        case 'model':
+          self.action_model();
+          break;
+        case 'logger':
+          self.action_logger();
+          break;
+        case 'setting':
+          self.action_setting();
+          break;
+        case 'proxy':
+          self.action_proxy();
+          break;
+        case 'account':
+          self.action_account();
+          break;
+        case 'route':
+          self.action_route();
+          break;
+        default:
+          riot.mount(document.getElementById('work_area'), 'Nothing!');
+      }
+
+    }.bind(this)
+
+    this.action_info = function()
+    {
+      self.info = "fFF"
+    }.bind(this)
+
+    this.action_event = function()
+    {
+      self.info = "event"
+    }.bind(this)
+
+    this.action_model = function()
+    {
+      self.info = "model"
+    }.bind(this)
+
+    this.action_logger = function()
+    {
+      self.info = "logger"
+    }.bind(this)
+
+    this.action_setting = function()
+    {
+      self.info = "setting"
+    }.bind(this)
+
+    this.action_proxy = function()
+    {
+      self.info = "proxy"
+    }.bind(this)
+
+    this.action_account = function()
+    {
+      self.info = "account"
+    }.bind(this)
+
+    this.action_route = function()
+    {
+      self.info = "route"
+    }.bind(this)
+
+    self.on('update', function () {
+      console.log("update!");
+    });
+
+    self.on('mount', function () {
+      console.log(this.action_menu);
+      if (!opts.is_login) {
+        riot.route('login/' + opts.project_name);
+        return;
+      }
+      self.select_menu({item: {id: 0, action: 'info', title: 'Info', active: true, show: true}})
+      self.update();
+    })
+
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
 riot.tag2('project_account', '<legend></legend> <div class="btn-group"> <span><a href="#" class="btn btn-info btn-xs">Create</a></span> <span><a href="#" class="btn btn-warning btn-xs">Import</a></span> </div> <table class="table table-striped table-hover "> <thead> <tr> <th>#</th> <th>Name</th> <th>Email</th> <th>Role</th> <th style="width: 200px"></th> </tr> </thead> <tbody> <tr each="{opts.projects}" class="{active: active}"> <td>-</td> <td>{name}</td> <td></td> <td></td> <td style="text-align: center"> <a href="#" class="btn btn-success btn-xs">Edit</a> <a href="#" class="btn btn-danger btn-xs">Delete</a> </td> </tr> </tbody> </table>', '', '', function(opts) {
     var self = this
@@ -657,5 +925,7 @@ riot.tag2('project_setting', '<legend></legend> <form class="form-horizontal"> <
     });
 });
 
-riot.tag2('start', '<div class="row page-header"> <div class="col-lg-10"> HELO! </div> </div>', '', '', function(opts) {
+<<<<<<< HEAD
+riot.tag2('start', '<div class="row page-header"> <div class="col-lg-10"> HELO! </div> </div> ======= <start> <div class="row page-header"> <div class="col-lg-10"> HELO! </div> </div>', '', '', function(opts) {
+>>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 });
