@@ -17,11 +17,7 @@
             [clojure.tools.logging :as log]
             [cheshire.core :refer :all]
             [ring.middleware.json :refer [wrap-json-response]]
-<<<<<<< HEAD
             [ring.middleware.json :refer [wrap-json-body]]
-=======
-            [ring.middleware.json :refer [wrap-json-params]]
->>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
             [ring.util.response :refer [response]]
             [ring.middleware.resource :refer :all]
     ;[ring.handler.dump :as ring-handle-dump]
@@ -84,13 +80,8 @@
         (wrap-resource "resources")
         ;(wrap-session {:store (mongodb-store (app-source/db app-setting/system-db) app-setting/system-session {})})
         ;(wrap-anti-forgery)
-<<<<<<< HEAD
         (wrap-json-body {:keywords? true :bigdecimals? true})
         (wrap-json-response {:pretty true}))
-=======
-        (wrap-json-params)
-        (wrap-json-response))
->>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
     (update-in site-defaults [:security] assoc :anti-forgery true)))
 
 (defn start []

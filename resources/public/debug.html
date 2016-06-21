@@ -5,7 +5,6 @@
   <title>Bootswatch: Lumen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<<<<<<< HEAD
   <!--<link rel="stylesheet" href="united.bootstrap.min.css" media="screen">-->
   <!--<link rel="stylesheet" href="//fonts.css.network/css?family=Ubuntu:400,700" media="screen">-->
   <link rel="stylesheet" href="//cdn.css.net/libs/bootswatch/3.3.6/journal/bootstrap.min.css" media="screen">
@@ -14,18 +13,12 @@
 
   <!--<link rel="stylesheet" href="//cdn.css.net/libs/highlight.js/9.4.0/styles/github.min.css">-->
 
-=======
-  <link rel="stylesheet" href="//cdn.css.net/libs/bootswatch/3.3.6/lumen/bootstrap.min.css" media="screen">
->>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
   <!--<link rel="stylesheet" href="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.css" media="screen">-->
 
   <script src="//cdn.css.net/libs/riot/2.4.1/riot+compiler.js"></script>
   <style>
-<<<<<<< HEAD
     @import url("http://fonts.css.network/css?family=News+Cycle:400,700");
 
-=======
->>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
     body {
       padding-top: 50px;
       font-size: 14px;
@@ -306,7 +299,6 @@
 <!--<script src="//cdn.css.net/libs/semantic-ui/2.1.8/semantic.min.js"></script>-->
 <script src="//cdn.css.net/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="static/js/md5.min.js"></script>
-<<<<<<< HEAD
 <!--<script src="static/js/kaleido.js"></script>-->
 
 <!--<script type="riot/tag" src="debug/nav_in_menu.html"></script>-->
@@ -340,200 +332,6 @@
 <script src="//cdn.css.net/libs/highlight.js/9.4.0/languages/json.min.js"></script>
 <!--<script src="//cdn.css.net/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>-->
 
-=======
-<script src="static/js/kaleido.js"></script>
-
-<script type="riot/tag" src="debug/nav_in_menu.html"></script>
-<script type="riot/tag" src="debug/nav_in_user.html"></script>
-
-<script type="riot/tag" src="debug/start.html"></script>
-<script type="riot/tag" src="debug/login.html"></script>
-
-<script type="riot/tag" src="debug/admin.html"></script>
-<script type="riot/tag" src="debug/admin/info.html"></script>
-<script type="riot/tag" src="debug/admin/setting.html"></script>
-<script type="riot/tag" src="debug/admin/project.html"></script>
-<script type="riot/tag" src="debug/admin/account.html"></script>
-<script type="riot/tag" src="debug/admin/event.html"></script>
-<script type="riot/tag" src="debug/admin/proxy.html"></script>
-
-<script type="riot/tag" src="debug/project.html"></script>
-<script type="riot/tag" src="debug/project/setting.html"></script>
-<script type="riot/tag" src="debug/project/account.html"></script>
-<script type="riot/tag" src="debug/project/route.html"></script>
-<script type="riot/tag" src="debug/project/model.html"></script>
-
-<script type="riot/tag" src="debug/help.html"></script>
-
-<script type="text/javascript">
-  //  var kaleido_debug = {
-  //    project_name: 'admin'
-  //  };
-
-  var kaleido_debug = riot.observable();
-  kaleido_debug.admin_project = 'kaleido';
-  kaleido_debug.project_name = kaleido_debug.admin_project;
-  kaleido_debug.admin_url = 'm';
-  kaleido_debug.base_url = '/';
-  kaleido_debug.project_prefix_url = 'project';
-
-  kaleido_debug.is_login = false;
-  kaleido_debug.is_admin = false;
-  kaleido_debug.admin_role_name = "admin";
-
-  kaleido_debug.username = "Guest";
-  kaleido_debug.session = null;
-  kaleido_debug.projects = [];
-
-  var dd;
-
-  kaleido_debug.reset = function () {
-    kaleido_debug.username = "Guest";
-    kaleido_debug.is_login = false;
-    kaleido_debug.is_admin = false;
-    kaleido_debug.project_name = kaleido_debug.admin_project;
-  };
-
-  kaleido_debug.init_projects = function () {
-    $.getJSON(this.base_url + this.admin_url + '/projects', function (projects) {
-      kaleido_debug.projects = projects;
-    });
-  };
-
-  kaleido_debug.refresh_session = function (backcall) {
-    $.getJSON('me', function (data) {
-      dd = data;
-      if ((_.isObject(data.account)) && (_.size(data.account) > 0)) {
-        _.each(data.account, function (val, key) {
-          kaleido_debug.username = val.auth.login_name;
-          kaleido_debug.userrole = val.auth.role;
-          kaleido_debug.project_name = key;
-          kaleido_debug.auth = val.auth;
-          if (key == kaleido_debug.admin_project) {
-            kaleido_debug.is_admin = true;
-            kaleido_debug.init_projects();
-          }
-        });
-        kaleido_debug.is_login = true;
-      }
-      if (typeof backcall == 'function') {
-        backcall();
-      }
-    });
-
-  };
-
-  kaleido_debug.login = function (project_name, params, backcall) {
-    $.getJSON('/csrf',
-        function (data) {
-          if (typeof data == "object") {
-            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-              jqXHR.setRequestHeader('X-CSRF-Token', data.csrf);
-            });
-            var project_auth_url = kaleido_debug.admin_url;
-            if (project_name != kaleido_debug.admin_project) {
-              project_auth_url = kaleido_debug.project_prefix_url + "/" + project_name;
-            }
-            $.post('/' + project_auth_url + '/auth/login',
-                {
-                  'login_name': params.login_name,
-                  'login_password': md5(md5(params.login_password) + data.csrf),
-                  'csrf': data.csrf
-                },
-                function (data) {
-                  console.log(data);
-                  kaleido_debug.trigger('login', data);
-                  if (data.status == true) {
-                    kaleido_debug.username = data.value.login_name;
-                    kaleido_debug.userrole = data.value.role;
-                    kaleido_debug.project_name = project_name;
-                    kaleido_debug.is_login = true;
-                    var redirect_url = '';
-                    if (kaleido_debug.project_name == kaleido_debug.admin_project) {
-                      kaleido_debug.is_admin = true;
-                      redirect_url = 'admin';
-                    } else {
-                      redirect_url = kaleido_debug.project_prefix_url + "/" + kaleido_debug.project_name;
-                    }
-                    riot.route(redirect_url);
-                    riot.update();
-                  }
-                });
-          }
-        }
-    );
-//
-    if (typeof backcall == 'function') {
-      backcall();
-    }
-  };
-
-  riot.mount('nav_in_menu', kaleido_debug);
-  riot.mount('nav_in_user', kaleido_debug);
-
-  //
-  kaleido_debug.refresh_session(function () {
-    riot.route.exec();
-    riot.update();
-  });
-
-  jQuery(document).ready(function () {
-    riot.route.start();
-    riot.route(function (f1, f2, f3) {
-      console.log("!!!3 " + f1 + f2 + f3);
-    });
-    riot.route("", function () {
-      riot.mount(document.getElementById('main'), 'start', kaleido_debug);
-      console.log("Start!");
-    });
-    riot.route("admin", function () {
-      if (kaleido_debug.project_name != kaleido_debug.admin_project) {
-        riot.route("");
-      }
-      riot.mount(document.getElementById('main'), 'admin', kaleido_debug);
-      console.log("Admin!");
-    });
-    riot.route("project/*", function (name) {
-      console.log("project/* name => " + name);
-      console.log("is_login => " + kaleido_debug.is_login);
-      if (!kaleido_debug.is_login) {
-        riot.route("login/" + name);
-        return;
-      }
-      if (name == kaleido_debug.admin_project) {
-        riot.route("admin");
-      }
-      riot.mount(document.getElementById('main'), 'project', kaleido_debug);
-      console.log("Project " + name);
-    });
-    //
-    riot.route("login", function () {
-      riot.mount(document.getElementById('main'), 'login', kaleido_debug);
-    });
-    riot.route("login/*", function (name) {
-      if (typeof name == "undefined") {
-        name = kaleido_debug.admin_project;
-      }
-      kaleido_debug.project_name = name;
-      riot.mount(document.getElementById('main'), 'login', kaleido_debug);
-      console.log("LOGIN!");
-    });
-    //
-    riot.route("logout", function () {
-      $.getJSON('/m/auth/logout', function () {
-        kaleido_debug.reset();
-        riot.route("");
-        riot.update();
-        console.log("LOGOUT!");
-      });
-    });
-    riot.route("help", function () {
-      riot.mount(document.getElementById('main'), 'help');
-      console.log("help!");
-    });
-  });
-</script>
->>>>>>> 12fa5dab22f60feb5ea0a9495816cfe6c11acf0d
 
 </body>
 </html>
