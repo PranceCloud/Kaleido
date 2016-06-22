@@ -19,12 +19,12 @@
 
             <span if={ type== "image" }>
             <input type="file" multiple class="form-control" name="{ name }" id="upload_image_{ name }">
-            <input type="hidden" name="{ name }">
+            <input type="hidden" id="upload_{ name }" name="{ name }">
             </span>
 
             <span if={ type== "file" }>
             <input type="file" multiple class="form-control" name="{ name }" id="upload_file_{ name }">
-            <input type="hidden" name="{ name }">
+            <input type="hidden" id="upload_{ name }" name="{ name }">
             </span>
 
           </div>
@@ -168,6 +168,7 @@
 //              showPercent: false,
               onFileSuccess: function (f, data) {
                 console.log(f, data)
+                $("#upload_" + data.value.field).attr('value', data.value._id)
               }
             })
           })
