@@ -20,6 +20,7 @@
                  [ring/ring-devel "1.4.0"]
                  [clj-http "2.2.0"]
                  [clj-time "0.11.0"]
+                 [coercer "0.2.0"]
                  [ring/ring-jetty-adapter "1.4.0"]]
   :plugins [[lein-ring "0.9.7"]]
   ;:ring {:core hong2-lein.core/app}

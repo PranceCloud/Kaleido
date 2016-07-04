@@ -1,12 +1,12 @@
 <project_route>
   <legend></legend>
-  <div class="row" show="{ is_response }">
+  <div class="row" if="{ is_response }">
     <div class="col-md-10 col-md-offset-1 well">
       <h5>{ this.method } - { this.url }</h5>
       <div><code class="json" id="response_code">{ JSON.stringify(this.response) }</code></div>
     </div>
   </div>
-  <div class="row" show="{ is_form }">
+  <div class="row" if="{ is_form }">
     <fieldset class="well col-md-10 col-lg-offset-1">
       <h5>Add { this._form.name }</h5>
       <form class="form-horizontal" id="{ this._form.name }_form" onsubmit="return false;"
@@ -148,7 +148,8 @@
         return m.name == e.item.name
       })
 //      console.log(self.form_fields)
-      self.is_form = true
+      self.is_form = (self.is_form) ? false : true
+
       self.is_response = false
       self.update()
       var upload_url = kaleido_admin.base_url + kaleido_admin.project_prefix_url + "/" + kaleido_admin.project_name + "/upload"

@@ -1,0 +1,15 @@
+{
+  "condition": {
+    "$or": [
+      {
+        "bbbb": 2
+      },
+      {
+        "aaaaa": 2
+      }
+    ]
+  },
+  "page": 1,
+  "page-num": 10,
+  "order": "name,1"
+}

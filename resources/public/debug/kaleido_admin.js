@@ -58,7 +58,7 @@ kaleido_admin.refresh_session = function (backcall) {
         });
         kaleido_admin.is_login = true;
       }
-    }).always(function () {
+    }).then(function () {
     if (typeof backcall == 'function') {
       backcall();
     }

@@ -19,6 +19,18 @@
         rd (from-db-object mg-object true)]
     rd))
 
+(defn get-model-stru
+  [project model]
+  (let [project (get-by-name project)]
+    (first (filter #(= (:name %) model) (get-in project [:model :data]))))
+  )
+
+(defn get-model-primary-fields
+  [project model]
+  (let [model-stru (get-model-stru project model)]
+    (into [] (filter #(= (:primary %) true) (get model-stru :fields))))
+  )
+
 (defn get-all-name
   []
   (let [db (db-source/db app-setting/system-db)
@@ -48,15 +60,19 @@
   (let [project (get-by-name project-name)]
     (if (empty? project)
       {:status false :message (str project-name " project not found")}
-      (let [db (db-source/db app-setting/system-db)
-            coll app-setting/system-project
-            filter-fields (fliter-key-in-array #{:name :fields :type :join :attrs} (:fields values))
-            data (into [(merge values {:fields filter-fields})]
-                       (filter #(not (= (:name %) model)) (get-in project [:model :data])))]
-        (log/info values)
-        (log/info filter-fields)
-        (mc/update-by-id db coll (:_id project) (merge project {:model {:data data}}))
-        {:status true :value data})))
+      (if (empty? (:fields values))
+        {:status false :message (str "fields can't empty")}
+        (let [db (db-source/db app-setting/system-db)
+              coll app-setting/system-project
+              filter-fields (fliter-key-in-array #{:name :primary :fields :type :join :attrs} (:fields values))
+              data (into [(merge values {:fields filter-fields})]
+                         (filter #(not (= (:name %) model)) (get-in project [:model :data])))]
+          (log/info values)
+          (log/info filter-fields)
+          (log/info data)
+          (mc/update-by-id db coll (:_id project) (merge project {:model {:data data}}))
+          {:status true :value data}))
+      ))
   )
 
 (defn delete-model

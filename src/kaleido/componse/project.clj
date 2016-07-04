@@ -45,12 +45,15 @@
   [request]
   (log/info request)
   (let [params (:body request)
-        project-name (get-in request [:route-params :_id])
         key (:key params)
+        project-name (get-in request [:route-params :_id])
         values (into {} (filter (fn [[k _]] (contains? (hash-set :name :fields :defined) k)) params))]
     (log/info params)
     (log/info values)
-    (response-json (suppose-project/save-model project-name key values))
+    (if (empty? (str key))
+      (response-json {:status false :message "lost model key?"})
+      (response-json (suppose-project/save-model project-name key values))
+      )
     )
   )
 
@@ -73,17 +76,22 @@
   (let [mp (:multipart-params request)
         md (get mp "model" "")
         fd (get mp "field" "")
-        project-name (get-in request [:route-params :_id])
-        session (:session request)]
-    (log/info "session => " session)
-    (log/info project-name md fd (get mp fd {}))
-    (let [u (suppose-uploads/upload-file-save project-name session md fd (get mp fd {}))]
-      (log/info "upload-file => " u)
-      (if (or (:status u) (not (nil? (:value u))))
-        (response-json {:value (:value u) :success 1})
-        (response-json {:message (:message u) :success 0})
-        ))
-
+        upload_name (get mp "upload_name" fd)]
+    (if (or (empty? md) (empty? fd))
+      (response-json {:message "lost model or field" :status false})
+      (let [project-name (get-in request [:route-params :_id])
+            session (:session request)
+            multi (get mp upload_name {})]
+        (log/info "session => " session)
+        (log/info project-name md fd multi)
+        (if (empty? multi)
+          (response-json {:message "missing field in multipart" :status false})
+          (let [u (suppose-uploads/upload-file-save project-name session md fd multi)]
+            (log/info "upload-file => " u)
+            (if (or (:status u) (not (nil? (:value u))))
+              (response-json {:value (:value u) :success 1 :status true})
+              (response-json {:message (:message u) :success 0 :status false})
+              )))))
     )
   )
 

@@ -5,51 +5,27 @@
   <title>Kaleido Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <link rel="stylesheet" href="/webix/codebase/webix.css" media="screen">
+  <!--<link rel="stylesheet" href="../webix/codebase/skins/compact.css" media="screen">-->
+  <link rel="stylesheet" href="../webix/codebase/webix.css" media="screen">
+  <link rel="stylesheet" href="//cdn.css.net/libs/highlight.js/9.4.0/styles/dark.min.css">
+  <script src="/static/js/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript">
+    var wui = {};
+    $(document).ready(function () {
+
+    });
+  </script>
 </head>
 <body>
 
 <script src="//cdn.css.net/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/static/js/md5.min.js"></script>
 <script src="/webix/codebase/webix_debug.js"></script>
+<script src="kadmin.js"></script>
+<script src="wui.js"></script>
 
-<script type="text/javascript">
-  var wui = {toolbar: {}};
-  wui.toolbar = {template: "Kaleido", height: 36};
-  wui.leftmenu = {
-    view: "menu", id: "leftMenu",
-    layout: "y", width: 200,
-    select: true,
-    data: [
-      {id: "1", value: "Translations"},
-      {id: "2", value: "Posts"},
-      {id: "3", value: "Info"}
-    ],
-    on: {
-      onMenuItemClick: function (id) {
-        $$("workArea").setHTML("Click: " + this.getMenuItem(id).value);
-      }
-    }
-  };
-  wui.workarea = {id: "workArea", template: "workArea"};
 
-  webix.ui({
-    type: "space", id: "a1", rows: [
-      wui.toolbar,
-      {
-        type: "wild",
-        cols: [
-          wui.leftmenu,
-          {view: "resizer"},
-          wui.workarea
-        ]
-      }
-    ]
-  });
-
-  $$("leftMenu").select(1);
-
-</script>
-
+<script src="//cdn.css.net/libs/highlight.js/9.4.0/highlight.min.js"></script>
+<script src="//cdn.css.net/libs/highlight.js/9.4.0/languages/json.min.js"></script>
 </body>
 </html>

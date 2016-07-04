@@ -18,3 +18,6 @@
   (into []
         (map #(into {} (filter (fn [[k _]] (contains? f-keys k)) %)) v-array))
   )
+
+(defn parse-int [s]
+  (Integer/parseInt (re-find #"\A-?\d+" s)))
